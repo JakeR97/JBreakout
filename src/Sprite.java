@@ -33,6 +33,10 @@ public class Sprite {
 		return width;
 	}
 	
+	public void setImage(Image i) {
+		image = i;
+	}
+	
 	public Image getImage() {
 		return image;
 	}
