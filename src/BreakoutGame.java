@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 public class BreakoutGame extends JFrame {
 	
 	private Paddle paddle;
+	private Ball ball;
 	private Timer timer;
 	
 	public static void main(String[] arg) {
@@ -29,6 +30,7 @@ public class BreakoutGame extends JFrame {
 		timer.scheduleAtFixedRate(new ScheduleTask(), 100, 3);
 		
 		paddle = new Paddle(400, 1000);
+		ball = new Ball(400 + paddle.getWidth()/2, 985);
 
 		revalidate();
 		repaint();
@@ -54,7 +56,17 @@ public class BreakoutGame extends JFrame {
 	private void drawObjects(Graphics2D g2d) {
 		g2d.drawImage(paddle.getImage(), paddle.getX(), paddle.getY(), 
 				paddle.getWidth(), paddle.getHeight(), this);
+		g2d.drawImage(ball.getImage(), ball.getX(), ball.getY(),
+				ball.getWidth(), ball.getHeight(), this);
 	}
+	
+	private void checkCollisions() {
+		if (ball.isCollidedWith(paddle)) {
+			ball.setVertDir("up");
+		}
+	}
+	
+// -------------------  CLASSES ------------------------------------------------- // 	
 	
 	private class MyKeyAdapter extends KeyAdapter {
 		@Override
@@ -73,8 +85,10 @@ public class BreakoutGame extends JFrame {
 		@Override
 		public void run() {
 			paddle.move();
-			repaint();
-			
+			ball.move();
+			ball.checkBounds();
+			checkCollisions();
+			repaint();			
 		}
 		
 	}

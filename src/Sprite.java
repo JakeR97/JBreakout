@@ -55,4 +55,12 @@ public class Sprite extends Component {
 		return new Rectangle(x, y, image.getWidth(null), image.getHeight(null));
 	}
 	
+	public boolean isCollidedWith(Sprite sprite) {
+		if (this.getRect().intersects(sprite.getRect())) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 }
