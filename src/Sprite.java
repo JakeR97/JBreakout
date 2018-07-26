@@ -1,7 +1,9 @@
+import java.awt.Component;
 import java.awt.Image;
 import java.awt.Rectangle;
 
-public class Sprite {
+@SuppressWarnings("serial")
+public class Sprite extends Component {
 
 	private int x;
 	private int y;
@@ -25,8 +27,16 @@ public class Sprite {
 		return y;
 	}
 	
+	public void setHeight(int h) {
+		height = h;
+	}
+	
 	public int getHeight() {
 		return height;
+	}
+	
+	public void setWidth(int w) {
+		width = w;
 	}
 	
 	public int getWidth() {

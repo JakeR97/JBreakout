@@ -1,7 +1,18 @@
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import javax.swing.JFrame;
 
 @SuppressWarnings("serial")
 public class BreakoutGame extends JFrame {
+	
+	private Paddle paddle;
+	private Timer timer;
 	
 	public static void main(String[] arg) {
 		new BreakoutGame();
@@ -10,8 +21,65 @@ public class BreakoutGame extends JFrame {
 	public BreakoutGame() {
 		this.setTitle("Breakout");
 		this.setVisible(true);
-		this.setLocation(690, 100);
-		this.setSize(600, 800);
+		this.setSize(Constants.WIDTH, Constants.HEIGHT);
+		this.setResizable(false);
+		this.addKeyListener(new MyKeyAdapter());
+		
+		timer = new Timer();
+		timer.scheduleAtFixedRate(new ScheduleTask(), 100, 10);
+		
+		paddle = new Paddle(400, 1000);
+
+		revalidate();
+		repaint();
+		
 	}
 	
+	@Override
+	public void paint(Graphics g) {
+		super.paint(g);
+		
+		Graphics2D g2d = (Graphics2D) g;
+		
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
+                RenderingHints.VALUE_RENDER_QUALITY);
+		
+		drawObjects(g2d);
+		
+	}
+
+	private void drawObjects(Graphics2D g2d) {
+		g2d.drawImage(paddle.getImage(), paddle.getX(), paddle.getY(), 
+				paddle.getWidth(), paddle.getHeight(), this);
+	}
+	
+	private class MyKeyAdapter extends KeyAdapter {
+		@Override
+		public void keyPressed(KeyEvent e) {
+			paddle.keyPressed(e);
+		}
+		
+		@Override
+		public void keyReleased(KeyEvent e) {
+			paddle.keyReleased(e);
+		}
+	}
+	
+	private class ScheduleTask extends TimerTask {
+
+		@Override
+		public void run() {
+			paddle.move();
+			repaint();
+			
+		}
+		
+	}
+	
+	
 }
+
+
