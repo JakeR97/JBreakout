@@ -36,10 +36,10 @@ public class Paddle extends Sprite {
 		int key = e.getKeyCode();
 		
 		if (key == KeyEvent.VK_LEFT) {
-			dx = -2;
+			dx = -(Constants.PADDLE_SPEED);
 		}
 		if (key == KeyEvent.VK_RIGHT) {
-			dx = 2;
+			dx = Constants.PADDLE_SPEED;
 		}
 	}
 	

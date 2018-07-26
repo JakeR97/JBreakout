@@ -26,7 +26,7 @@ public class BreakoutGame extends JFrame {
 		this.addKeyListener(new MyKeyAdapter());
 		
 		timer = new Timer();
-		timer.scheduleAtFixedRate(new ScheduleTask(), 100, 10);
+		timer.scheduleAtFixedRate(new ScheduleTask(), 100, 3);
 		
 		paddle = new Paddle(400, 1000);
 
