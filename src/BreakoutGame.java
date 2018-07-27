@@ -1,15 +1,17 @@
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.JFrame;
+import javax.swing.Timer;
 
 @SuppressWarnings("serial")
-public class BreakoutGame extends JFrame {
+public class BreakoutGame extends JFrame implements ActionListener {
 	
 	private Paddle paddle;
 	private Ball ball;
@@ -26,8 +28,9 @@ public class BreakoutGame extends JFrame {
 		this.setResizable(false);
 		this.addKeyListener(new MyKeyAdapter());
 		
-		timer = new Timer();
-		timer.scheduleAtFixedRate(new ScheduleTask(), 100, 3);
+		timer = new Timer(2, (ActionListener) this);
+		timer.setInitialDelay(1000);
+		timer.start();
 		
 		paddle = new Paddle(400, 1000);
 		ball = new Ball(400 + paddle.getWidth()/2, 985);
@@ -39,7 +42,7 @@ public class BreakoutGame extends JFrame {
 	
 	@Override
 	public void paint(Graphics g) {
-		super.paint(g);
+		super.paint(g); 
 		
 		Graphics2D g2d = (Graphics2D) g;
 		
@@ -66,6 +69,14 @@ public class BreakoutGame extends JFrame {
 		}
 	}
 	
+	public void actionPerformed(ActionEvent e) {
+		paddle.move();
+		ball.move();
+		ball.checkBounds();
+		checkCollisions();
+		repaint();
+	}
+	
 // -------------------  CLASSES ------------------------------------------------- // 	
 	
 	private class MyKeyAdapter extends KeyAdapter {
@@ -80,18 +91,18 @@ public class BreakoutGame extends JFrame {
 		}
 	}
 	
-	private class ScheduleTask extends TimerTask {
-
-		@Override
-		public void run() {
-			paddle.move();
-			ball.move();
-			ball.checkBounds();
-			checkCollisions();
-			repaint();			
-		}
-		
-	}
+//	private class ScheduleTask extends TimerTask {
+//
+//		@Override
+//		public void run() {
+//			paddle.move();
+//			ball.move();
+//			ball.checkBounds();
+//			checkCollisions();
+//			repaint();			
+//		}
+//		
+//	}
 	
 	
 }
