@@ -7,6 +7,7 @@ public class Ball extends Sprite {
 	private String hoDir;
 	private int vertSpeed;
 	private int hoSpeed;
+	private String spec;
 
 	public Ball(int x, int y) {
 		setX(x);
@@ -16,6 +17,7 @@ public class Ball extends Sprite {
 		hoDir = "left";
 		vertSpeed = 10;
 		hoSpeed = 5;
+		spec = "";
 		
 		ImageIcon ii = new ImageIcon("Ball1.jpg");
 		this.setImage(ii.getImage());
@@ -50,6 +52,14 @@ public class Ball extends Sprite {
 	
 	public int getVertSpeed() {
 		return vertSpeed;
+	}
+	
+	public void setSpecial(String special) {
+		spec = special;
+	}
+	
+	public String getSpecial() {
+		return spec;
 	}
 	
 	public void move() {

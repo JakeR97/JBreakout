@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 @SuppressWarnings("serial")
@@ -36,12 +35,15 @@ public class BreakoutGame extends JFrame implements ActionListener {
 		
 		paddle = new Paddle(400, 1000);
 		ball = new Ball(400 + paddle.getWidth()/2, 985);
+//		ball = new Ball(400, 100);
 		bricks = new ArrayList<Brick>();
 		
 		addLevelOne();
 
 		revalidate();
 		repaint();
+		
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 	}
 	
@@ -51,7 +53,7 @@ public class BreakoutGame extends JFrame implements ActionListener {
 		for (int i = 1; i <= 13; i++) {
 			for (int j = 1; j <= 5; j++) {
 				if ((i == 2 || i == 12) && (j == 2 || j == 4)) {
-					SpecialBrick brick = new SpecialBrick(i*x, 100 + j*y, "BigPaddle");
+					SpecialBrick brick = new SpecialBrick(i*x, 100 + j*y, "FireBall");
 					bricks.add(brick);
 				} else {
 					Brick brick = new Brick(i*x, 100 + j*y);
@@ -117,27 +119,50 @@ public class BreakoutGame extends JFrame implements ActionListener {
 		for (Brick brick: bricks) {
 			if (ball.isCollidedWith(brick)) {
 				brickToRemove = brick;
-				if (Math.abs(ball.getRect().getMinY() - brick.getRect().getMaxY()) < 5) {
-					ball.setVertDir("down");
-				}
-				if (Math.abs(ball.getRect().getMaxY() - brick.getRect().getMinY()) < 5) {
-					ball.setVertDir("up");
-				}
-				if (Math.abs(ball.getRect().getMinX() - brick.getRect().getMaxX()) < 5) {
-					ball.setHoDir("right");
-				}
-				if (Math.abs(ball.getRect().getMaxX() - brick.getRect().getMinX()) < 5) {
-					ball.setHoDir("left");
+				if (!ball.getSpecial().equals("FireBall")) {
+					if (Math.abs(ball.getRect().getMinY() - brick.getRect().getMaxY()) <= 5) {
+						ball.setVertDir("down");
+					}
+					if (Math.abs(ball.getRect().getMaxY() - brick.getRect().getMinY()) <= 5) {
+						ball.setVertDir("up");
+					}
+					if (Math.abs(ball.getRect().getMinX() - brick.getRect().getMaxX()) <= 5) {
+						ball.setHoDir("right");
+					}
+					if (Math.abs(ball.getRect().getMaxX() - brick.getRect().getMinX()) <= 5) {
+						ball.setHoDir("left");
+					}
 				}
 				if (brick.getClass() == SpecialBrick.class) {
 					String power = ((SpecialBrick) brick).getPowerUp();
+					Timer specTimer = new Timer("Special Timer");
 					int x = paddle.getX();
 					int y = paddle.getY();
+					//Big Paddle brick
 					if (power.equals("BigPaddle")) {
 						paddle = new SpecialPaddle(x, y, "Long");
+						specTimer.schedule(new TimerTask() {
+							public void run() {
+								paddle = new Paddle(paddle.getX(), paddle.getY());
+							}
+						}, 10000);
+					//Small paddle brick
 					} else if (power.equals("SmallPaddle")) {
-						paddle = new SpecialPaddle(x, y, "Short");						
-					}
+						paddle = new SpecialPaddle(x, y, "Short");	
+						specTimer.schedule(new TimerTask() {
+							public void run() {
+								paddle = new Paddle(paddle.getX(), paddle.getY());
+							}
+						}, 10000);
+					//Fireball brick
+					} else if (power.equals("FireBall")) {
+						ball.setSpecial("FireBall");
+						specTimer.schedule(new TimerTask() {
+							public void run() {
+								ball.setSpecial("");
+							}
+						}, 10000);
+					}					
 				}
 			}
 		}
