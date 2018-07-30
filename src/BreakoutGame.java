@@ -38,7 +38,7 @@ public class BreakoutGame extends JFrame implements ActionListener {
 		timer.scheduleAtFixedRate(new ScheduleTask(), 1000, 15);
 		
 		paddle = new Paddle(400, 1000);
-		ball = new Ball(400 + paddle.getWidth()/2, 985);
+		ball = new Ball(400 + paddle.getWidth()/2, 985, 2);
 		bricks = new ArrayList<Brick>();
 		
 		addLevelOne();
@@ -53,13 +53,13 @@ public class BreakoutGame extends JFrame implements ActionListener {
 	public void addLevelOne() {
 		int x = 65;
 		int y = 20;
-		for (int i = 1; i <= 13; i++) {
-			for (int j = 1; j <= 5; j++) {
-				if ((i == 2 || i == 12) && (j == 2 || j == 4)) {
-					SpecialBrick brick = new SpecialBrick(i*x, 100 + j*y, "FireBall");
+		for (int i = 1; i <= 6; i++) {
+			for (int j = 1; j <= 6; j++) {
+				if ((i == 2 || i == 5) && (j == 2 || j == 5)) {
+					SpecialBrick brick = new SpecialBrick(250 + i*x, 300 + j*y, "FireBall");
 					bricks.add(brick);
 				} else {
-					Brick brick = new Brick(i*x, 100 + j*y);
+					Brick brick = new Brick(250 + i*x, 300 + j*y);
 					bricks.add(brick);
 				}
 			}
@@ -98,25 +98,24 @@ public class BreakoutGame extends JFrame implements ActionListener {
 	private void checkCollisions() {
 		if (ball.isCollidedWith(paddle)) {
 			ball.setVertDir("up");
-			if (ball.getRect().getMaxX() < paddle.getRect().getMinX() + (paddle.getWidth()/3)) {
-				if (ball.getHoSpeed() == 0) {
-					ball.setHoSpeed(5);
-					ball.setHoDir("left");
-			    } else if (ball.getHoDir().equals("left")) {
-					ball.setHoSpeed(ball.getHoSpeed() + 1);
-				} else if (ball.getHoDir().equals("right")) {
-					ball.setHoSpeed(0);
-				} 
+			if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (4*paddle.getWidth()/5)) {
+				ball.setHoDir("right");
+				ball.setHoSpeed(10);
 			}
-			if (ball.getRect().getMinX() > paddle.getRect().getMaxX() - (paddle.getWidth()/3)) {
-				if (ball.getHoSpeed() == 0) {
-					ball.setHoSpeed(5);
-					ball.setHoDir("right");
-			    } else if (ball.getHoDir().equals("right")) {
-					ball.setHoSpeed(ball.getHoSpeed() + 1);
-				} else if (ball.getHoDir().equals("left")) {
-					ball.setHoSpeed(0);
-				} 
+			else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (3*paddle.getWidth()/5)) {
+				ball.setHoDir("right");
+				ball.setHoSpeed(5);
+			}
+			else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (2*paddle.getWidth()/5)) {
+				ball.setHoSpeed(0);
+			}
+			else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (paddle.getWidth()/5)) {
+				ball.setHoDir("left");
+				ball.setHoSpeed(5);
+			}
+			else if (ball.getRect().getMaxX() > paddle.getRect().getMinX()) {
+				ball.setHoDir("left");
+				ball.setHoSpeed(10);
 			}
 		}
 		Brick brickToRemove = null;
@@ -183,10 +182,16 @@ public class BreakoutGame extends JFrame implements ActionListener {
 		repaint();
 	}
 	
-	public void endGame() {
+	public void loseLevel() {
 		ball.setVertSpeed(0);
 		ball.setHoSpeed(0);
 		System.out.println("Game Over");
+	}
+	
+	public void winLevel() {
+		ball.setVertSpeed(0);
+		ball.setHoSpeed(0);
+		System.out.println("You win!");
 	}
 	
 // -------------------  CLASSES ------------------------------------------------- // 	
@@ -210,16 +215,17 @@ public class BreakoutGame extends JFrame implements ActionListener {
 			paddle.move();
 			ball.move();
 			if (ball.checkBounds()) {
-				endGame();
+				loseLevel();
+				timer.cancel();
+			}
+			if (bricks.isEmpty()) {
+				winLevel();
 				timer.cancel();
 			}
 			checkCollisions();
 			repaint();			
-		}
-		
-	}
-	
-	
+		}	
+	}	
 }
 
 

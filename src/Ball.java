@@ -9,17 +9,17 @@ public class Ball extends Sprite {
 	private int hoSpeed;
 	private String spec;
 
-	public Ball(int x, int y) {
+	public Ball(int x, int y, int ball) {
 		setX(x);
 		setY(y);
 		setVisible(true);
 		vertDir = "up";
 		hoDir = "left";
 		vertSpeed = 10;
-		hoSpeed = 5;
+		hoSpeed = 2;
 		spec = "";
 		
-		ImageIcon ii = new ImageIcon("Ball1.png");
+		ImageIcon ii = new ImageIcon("Ball" + ball + ".png");
 		this.setImage(ii.getImage());
 		
 		this.setHeight(this.getImage().getHeight(null));
