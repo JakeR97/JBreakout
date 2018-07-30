@@ -86,15 +86,25 @@ public class BreakoutGame extends JFrame implements ActionListener {
 	private void checkCollisions() {
 		if (ball.isCollidedWith(paddle)) {
 			ball.setVertDir("up");
-			if (ball.getHoSpeed() == 0 && paddle.getDX() == 1) {
-				ball.setHoDir("right");
-			} else if (ball.getHoSpeed() == 0 && paddle.getDX() == -1) {
-				ball.setHoDir("left");
+			if (ball.getRect().getMaxX() < paddle.getRect().getMinX() + (paddle.getWidth()/3)) {
+				if (ball.getHoSpeed() == 0) {
+					ball.setHoSpeed(5);
+					ball.setHoDir("left");
+			    } else if (ball.getHoDir().equals("left")) {
+					ball.setHoSpeed(ball.getHoSpeed() + 1);
+				} else if (ball.getHoDir().equals("right")) {
+					ball.setHoSpeed(0);
+				} 
 			}
-			if (ball.getHoDir().equals("left")) {
-				ball.setHoSpeed(Math.abs(ball.getHoSpeed() - paddle.getDX()));	
-			} else {
-				ball.setHoSpeed(Math.abs(ball.getHoSpeed() + paddle.getDX()));	
+			if (ball.getRect().getMinX() > paddle.getRect().getMaxX() - (paddle.getWidth()/3)) {
+				if (ball.getHoSpeed() == 0) {
+					ball.setHoSpeed(5);
+					ball.setHoDir("right");
+			    } else if (ball.getHoDir().equals("right")) {
+					ball.setHoSpeed(ball.getHoSpeed() + 1);
+				} else if (ball.getHoDir().equals("left")) {
+					ball.setHoSpeed(0);
+				} 
 			}
 		}
 		Brick brickToRemove = null;
