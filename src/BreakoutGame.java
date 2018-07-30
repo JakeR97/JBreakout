@@ -1,5 +1,6 @@
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 @SuppressWarnings("serial")
@@ -30,12 +32,13 @@ public class BreakoutGame extends JFrame implements ActionListener {
 		this.setResizable(false);
 		this.addKeyListener(new MyKeyAdapter());
 		
+		this.setContentPane(new BackgroundPanel());
+		
 		timer = new Timer();
 		timer.scheduleAtFixedRate(new ScheduleTask(), 1000, 15);
 		
 		paddle = new Paddle(400, 1000);
 		ball = new Ball(400 + paddle.getWidth()/2, 985);
-//		ball = new Ball(400, 100);
 		bricks = new ArrayList<Brick>();
 		
 		addLevelOne();
@@ -66,6 +69,7 @@ public class BreakoutGame extends JFrame implements ActionListener {
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g); 
+		
 		
 		Graphics2D g2d = (Graphics2D) g;
 		
@@ -123,7 +127,7 @@ public class BreakoutGame extends JFrame implements ActionListener {
 					if (Math.abs(ball.getRect().getMinY() - brick.getRect().getMaxY()) <= 5) {
 						ball.setVertDir("down");
 					}
-					if (Math.abs(ball.getRect().getMaxY() - brick.getRect().getMinY()) <= 5) {
+					if (Math.abs(ball.getRect().getMaxY() - brick.getRect().getMinY()) <= 10) {
 						ball.setVertDir("up");
 					}
 					if (Math.abs(ball.getRect().getMinX() - brick.getRect().getMaxX()) <= 5) {
