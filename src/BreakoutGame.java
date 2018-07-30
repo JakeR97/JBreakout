@@ -5,10 +5,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.JFrame;
-import javax.swing.Timer;
 
 @SuppressWarnings("serial")
 public class BreakoutGame extends JFrame implements ActionListener {
@@ -28,9 +28,8 @@ public class BreakoutGame extends JFrame implements ActionListener {
 		this.setResizable(false);
 		this.addKeyListener(new MyKeyAdapter());
 		
-		timer = new Timer(2, (ActionListener) this);
-		timer.setInitialDelay(1000);
-		timer.start();
+		timer = new Timer();
+		timer.scheduleAtFixedRate(new ScheduleTask(), 1000, 3);
 		
 		paddle = new Paddle(400, 1000);
 		ball = new Ball(400 + paddle.getWidth()/2, 985);
@@ -66,6 +65,16 @@ public class BreakoutGame extends JFrame implements ActionListener {
 	private void checkCollisions() {
 		if (ball.isCollidedWith(paddle)) {
 			ball.setVertDir("up");
+			if (ball.getHoSpeed() == 0 && paddle.getDX() == 1) {
+				ball.setHoDir("right");
+			} else if (ball.getHoSpeed() == 0 && paddle.getDX() == -1) {
+				ball.setHoDir("left");
+			}
+			if (ball.getHoDir().equals("left")) {
+				ball.setHoSpeed(Math.abs(ball.getHoSpeed() - paddle.getDX()));	
+			} else {
+				ball.setHoSpeed(Math.abs(ball.getHoSpeed() + paddle.getDX()));	
+			}
 		}
 	}
 	
@@ -75,6 +84,12 @@ public class BreakoutGame extends JFrame implements ActionListener {
 		ball.checkBounds();
 		checkCollisions();
 		repaint();
+	}
+	
+	public void endGame() {
+		ball.setVertSpeed(0);
+		ball.setHoSpeed(0);
+		System.out.println("Game Over");
 	}
 	
 // -------------------  CLASSES ------------------------------------------------- // 	
@@ -91,18 +106,21 @@ public class BreakoutGame extends JFrame implements ActionListener {
 		}
 	}
 	
-//	private class ScheduleTask extends TimerTask {
-//
-//		@Override
-//		public void run() {
-//			paddle.move();
-//			ball.move();
-//			ball.checkBounds();
-//			checkCollisions();
-//			repaint();			
-//		}
-//		
-//	}
+	private class ScheduleTask extends TimerTask {
+
+		@Override
+		public void run() {
+			paddle.move();
+			ball.move();
+			if (ball.checkBounds()) {
+				endGame();
+				timer.cancel();
+			}
+			checkCollisions();
+			repaint();			
+		}
+		
+	}
 	
 	
 }

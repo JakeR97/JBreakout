@@ -19,6 +19,10 @@ public class Paddle extends Sprite {
 		this.setWidth(this.getImage().getWidth(null));
 	}
 	
+	public int getDX() {
+		return dx;
+	}
+	
 	public void move() {
 		if (dx > 0 && this.getRect().getMaxX() < Constants.WIDTH - 20) {
 			this.setX(this.getX() + dx);

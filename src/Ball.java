@@ -32,6 +32,26 @@ public class Ball extends Sprite {
 		hoDir = str;
 	}
 	
+	public String getHoDir() {
+		return hoDir;
+	}
+	
+	public void setHoSpeed(int speed) {
+		hoSpeed = speed;
+	}
+	
+	public int getHoSpeed() {
+		return hoSpeed;
+	}
+	
+	public void setVertSpeed(int speed) {
+		vertSpeed = speed;
+	}
+	
+	public int getVertSpeed() {
+		return vertSpeed;
+	}
+	
 	public void move() {
 		if (vertDir.equals("up")) {
 			this.setY(this.getY() - vertSpeed);
@@ -45,17 +65,18 @@ public class Ball extends Sprite {
 		}
 	}
 	
-	public void checkBounds() {
+	public boolean checkBounds() {
 		if (this.getY() < 50) {
 			vertDir = "down";
 		} else if (this.getY() > Constants.HEIGHT - 10) {
-			//GAME OVER
+			return true;
 		}
 		if (this.getX() < 10) {
 			this.setHoDir("right");
 		} else if (this.getX() > Constants.HEIGHT - 110) {
 			this.setHoDir("left");
 		}
+		return false;
 	}
 	
 	
