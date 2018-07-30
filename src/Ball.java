@@ -14,7 +14,7 @@ public class Ball extends Sprite {
 		setVisible(true);
 		vertDir = "up";
 		hoDir = "left";
-		vertSpeed = 5;
+		vertSpeed = 10;
 		hoSpeed = 5;
 		
 		ImageIcon ii = new ImageIcon("Ball1.jpg");
