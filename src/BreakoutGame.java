@@ -33,6 +33,7 @@ public class BreakoutGame extends JFrame implements ActionListener {
 		
 		paddle = new Paddle(400, 1000);
 		ball = new Ball(400 + paddle.getWidth()/2, 985);
+		Brick brick = new Brick(100, 400);
 
 		revalidate();
 		repaint();
