@@ -215,7 +215,6 @@ public class BreakoutGame extends JFrame implements ActionListener {
 	}
 	
 	public void loseLevel() {
-		Graphics g = this.getGraphics();
 		ball.setVertSpeed(0);
 		ball.setHoSpeed(0);
 		gameOver = true;
