@@ -9,7 +9,7 @@ public class Brick extends Sprite {
 		
 		this.setVisible(true);
 		
-		ImageIcon ii = new ImageIcon("Brick.jpg");
+		ImageIcon ii = new ImageIcon("Brick.png");
 		this.setImage(ii.getImage());
 		
 		this.setHeight(this.getImage().getHeight(null));

@@ -8,7 +8,7 @@ import javax.swing.JComponent;
 public class BackgroundPanel extends JComponent {
 	private Image image;
 	public BackgroundPanel() {
-		ImageIcon ii = new ImageIcon("Background.jpg");
+		ImageIcon ii = new ImageIcon("Background.png");
 		image = ii.getImage();
 	}
 	

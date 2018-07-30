@@ -19,7 +19,7 @@ public class Ball extends Sprite {
 		hoSpeed = 5;
 		spec = "";
 		
-		ImageIcon ii = new ImageIcon("Ball1.jpg");
+		ImageIcon ii = new ImageIcon("Ball1.png");
 		this.setImage(ii.getImage());
 		
 		this.setHeight(this.getImage().getHeight(null));
