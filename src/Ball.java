@@ -14,8 +14,8 @@ public class Ball extends Sprite {
 		setVisible(true);
 		vertDir = "up";
 		hoDir = "left";
-		vertSpeed = 1;
-		hoSpeed = 1;
+		vertSpeed = 5;
+		hoSpeed = 5;
 		
 		ImageIcon ii = new ImageIcon("Ball1.jpg");
 		this.setImage(ii.getImage());

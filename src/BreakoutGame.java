@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -16,6 +17,7 @@ public class BreakoutGame extends JFrame implements ActionListener {
 	private Paddle paddle;
 	private Ball ball;
 	private Timer timer;
+	private ArrayList<Brick> bricks;
 	
 	public static void main(String[] arg) {
 		new BreakoutGame();
@@ -29,15 +31,28 @@ public class BreakoutGame extends JFrame implements ActionListener {
 		this.addKeyListener(new MyKeyAdapter());
 		
 		timer = new Timer();
-		timer.scheduleAtFixedRate(new ScheduleTask(), 1000, 3);
+		timer.scheduleAtFixedRate(new ScheduleTask(), 1000, 15);
 		
 		paddle = new Paddle(400, 1000);
 		ball = new Ball(400 + paddle.getWidth()/2, 985);
-		Brick brick = new Brick(100, 400);
+		bricks = new ArrayList<Brick>();
+		
+		addLevelOne();
 
 		revalidate();
 		repaint();
 		
+	}
+	
+	public void addLevelOne() {
+		int x = 65;
+		int y = 20;
+		for (int i = 1; i <= 13; i++) {
+			for (int j = 1; j <= 5; j++) {
+				Brick brick = new Brick(i*x, 100 + j*y);
+				bricks.add(brick);
+			}
+		}
 	}
 	
 	@Override
@@ -61,6 +76,11 @@ public class BreakoutGame extends JFrame implements ActionListener {
 				paddle.getWidth(), paddle.getHeight(), this);
 		g2d.drawImage(ball.getImage(), ball.getX(), ball.getY(),
 				ball.getWidth(), ball.getHeight(), this);
+		for (Brick brick: bricks) {
+			g2d.drawImage(brick.getImage(), brick.getX(), brick.getY(),
+					brick.getWidth(), brick.getHeight(), this);
+		}
+		
 	}
 	
 	private void checkCollisions() {
@@ -76,6 +96,27 @@ public class BreakoutGame extends JFrame implements ActionListener {
 			} else {
 				ball.setHoSpeed(Math.abs(ball.getHoSpeed() + paddle.getDX()));	
 			}
+		}
+		Brick brickToRemove = null;
+		for (Brick brick: bricks) {
+			if (ball.isCollidedWith(brick)) {
+				brickToRemove = brick;
+				if (Math.abs(ball.getRect().getMinY() - brick.getRect().getMaxY()) < 5) {
+					ball.setVertDir("down");
+				}
+				if (Math.abs(ball.getRect().getMaxY() - brick.getRect().getMinY()) < 5) {
+					ball.setVertDir("up");
+				}
+				if (Math.abs(ball.getRect().getMinX() - brick.getRect().getMaxX()) < 5) {
+					ball.setHoDir("right");
+				}
+				if (Math.abs(ball.getRect().getMaxX() - brick.getRect().getMinX()) < 5) {
+					ball.setHoDir("left");
+				}
+			}
+		}
+		if (brickToRemove != null) {
+			bricks.remove(brickToRemove);
 		}
 	}
 	
