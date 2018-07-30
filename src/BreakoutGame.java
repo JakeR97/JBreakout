@@ -1,6 +1,7 @@
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,6 +21,7 @@ public class BreakoutGame extends JFrame implements ActionListener {
 	private Ball ball;
 	private Timer timer;
 	private ArrayList<Brick> bricks;
+	private boolean gameOver, levelWon;
 	
 	public static void main(String[] arg) {
 		new BreakoutGame();
@@ -31,8 +33,13 @@ public class BreakoutGame extends JFrame implements ActionListener {
 		this.setSize(Constants.WIDTH, Constants.HEIGHT);
 		this.setResizable(false);
 		this.addKeyListener(new MyKeyAdapter());
+		gameOver = false;
+		levelWon = false;
 		
 		this.setContentPane(new BackgroundPanel());
+		
+		ImageIcon ii = new ImageIcon("Ball1.png");
+		this.setIconImage(ii.getImage());
 		
 		timer = new Timer();
 		timer.scheduleAtFixedRate(new ScheduleTask(), 1000, 15);
@@ -80,6 +87,17 @@ public class BreakoutGame extends JFrame implements ActionListener {
                 RenderingHints.VALUE_RENDER_QUALITY);
 		
 		drawObjects(g2d);
+		
+		if (gameOver) {
+			g2d.setColor(Color.RED);
+			g2d.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 72));
+			g2d.drawString("Game Over", 350, 600);
+		}
+		if (levelWon) {
+			g2d.setColor(Color.GREEN);
+			g2d.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 72));
+			g2d.drawString("Level Won!", 350, 600);
+		}
 		
 	}
 
@@ -165,6 +183,20 @@ public class BreakoutGame extends JFrame implements ActionListener {
 								ball.setSpecial("");
 							}
 						}, 10000);
+					} else if (power.equals("SpeedUp")) {
+						paddle.setPaddleSpeed(15);
+						specTimer.schedule(new TimerTask() {
+							public void run() {
+								paddle.setPaddleSpeed(10);
+							}
+						}, 10000);
+					} else if (power.equals("SlowDown")) {
+						paddle.setPaddleSpeed(5);
+						specTimer.schedule(new TimerTask() {
+							public void run() {
+								paddle.setPaddleSpeed(10);
+							}
+						}, 10000);
 					}					
 				}
 			}
@@ -183,15 +215,16 @@ public class BreakoutGame extends JFrame implements ActionListener {
 	}
 	
 	public void loseLevel() {
+		Graphics g = this.getGraphics();
 		ball.setVertSpeed(0);
 		ball.setHoSpeed(0);
-		System.out.println("Game Over");
+		gameOver = true;
 	}
 	
 	public void winLevel() {
 		ball.setVertSpeed(0);
 		ball.setHoSpeed(0);
-		System.out.println("You win!");
+		levelWon = true;
 	}
 	
 // -------------------  CLASSES ------------------------------------------------- // 	
@@ -216,7 +249,6 @@ public class BreakoutGame extends JFrame implements ActionListener {
 			ball.move();
 			if (ball.checkBounds()) {
 				loseLevel();
-				timer.cancel();
 			}
 			if (bricks.isEmpty()) {
 				winLevel();

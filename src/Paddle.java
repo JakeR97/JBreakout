@@ -5,11 +5,14 @@ import javax.swing.ImageIcon;
 @SuppressWarnings("serial")
 public class Paddle extends Sprite {
 	private int dx;
-
+	private int paddleSpeed;
+	
+	
 	public Paddle(int x, int y) {
 		setX(x);
 		setY(y);
 		dx = 0;
+		paddleSpeed = 10;
 		this.setVisible(true);
 		
 		ImageIcon ii = new ImageIcon("paddle.png");
@@ -21,6 +24,10 @@ public class Paddle extends Sprite {
 	
 	public int getDX() {
 		return dx;
+	}
+	
+	public void setPaddleSpeed(int newSpeed) {
+		paddleSpeed = newSpeed;
 	}
 	
 	public void move() {
@@ -40,10 +47,10 @@ public class Paddle extends Sprite {
 		int key = e.getKeyCode();
 		
 		if (key == KeyEvent.VK_LEFT) {
-			dx = -(Constants.PADDLE_SPEED);
+			dx = -(paddleSpeed);
 		}
 		if (key == KeyEvent.VK_RIGHT) {
-			dx = Constants.PADDLE_SPEED;
+			dx = paddleSpeed;
 		}
 	}
 	
