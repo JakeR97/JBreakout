@@ -76,14 +76,14 @@ public class Ball extends Sprite {
 	}
 	
 	public boolean checkBounds() {
-		if (this.getY() < 50) {
+		if (this.getY() < 10) {
 			vertDir = "down";
 		} else if (this.getY() > Constants.HEIGHT - 10) {
 			return true;
 		}
 		if (this.getX() < 10) {
 			this.setHoDir("right");
-		} else if (this.getX() > Constants.HEIGHT - 110) {
+		} else if (this.getX() > Constants.WIDTH - (10 + getWidth())) {
 			this.setHoDir("left");
 		}
 		return false;
