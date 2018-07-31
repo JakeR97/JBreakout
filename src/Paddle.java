@@ -15,7 +15,7 @@ public class Paddle extends Sprite {
 		paddleSpeed = 10;
 		this.setVisible(true);
 		
-		ImageIcon ii = new ImageIcon("paddle.png");
+		ImageIcon ii = new ImageIcon("Images/paddle.png");
 		this.setImage(ii.getImage());
 		
 		this.setHeight(this.getImage().getHeight(null));

@@ -38,7 +38,7 @@ public class BreakoutGame extends JFrame implements ActionListener {
 		
 		this.setContentPane(new BackgroundPanel());
 		
-		ImageIcon ii = new ImageIcon("Ball1.png");
+		ImageIcon ii = new ImageIcon("Images/Ball1.png");
 		this.setIconImage(ii.getImage());
 		
 		timer = new Timer();
