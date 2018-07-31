@@ -15,7 +15,7 @@ public class Paddle extends Sprite {
 		setX(x);
 		setY(y);
 		dx = 0;
-		paddleSpeed = 10;
+		paddleSpeed = 12;
 		this.setVisible(true);
 		
 		

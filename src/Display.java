@@ -14,9 +14,11 @@ import java.util.TimerTask;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+@SuppressWarnings("serial")
 public class Display extends JPanel implements ActionListener {
 	
 	private Paddle paddle;
@@ -25,18 +27,16 @@ public class Display extends JPanel implements ActionListener {
 	private ArrayList<Brick> bricks;
 	private boolean gameOver, levelWon;
 	private Image background;
+	private JLabel count3, count2, count1;
 
-	public Display() {
+	public Display() throws InterruptedException {
 		initialize();
 	}
 
-	private void initialize() {
+	private void initialize() throws InterruptedException {
 		addKeyListener(new MyKeyAdapter());
 		setFocusable(true);
-		setDoubleBuffered(true);
-		
-		timer = new Timer(15, this);
-		timer.start();
+		setDoubleBuffered(true);		
 		
 		//Initialize variables/objects
 		paddle = new Paddle(400, 1000);
@@ -44,30 +44,34 @@ public class Display extends JPanel implements ActionListener {
 		bricks = new ArrayList<Brick>();
 		gameOver = false;
 		levelWon = false;
+		count3 = new JLabel("3");
+		count3.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 72));
+		count3.setForeground(Color.WHITE);
+		count2 = new JLabel("2");
+		count2.setForeground(Color.WHITE);
+		count2.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 72));
+		count1 = new JLabel("2");
+		count1.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 72));
+		count1.setForeground(Color.WHITE);
 		
 		//Background
 		ImageIcon ii = new ImageIcon("Images/Background.png");
 		background = ii.getImage();
 		
-		addLevelOne();
-
+		addLevel(1);	
+		
+		timer = new Timer(10, this);
+		timer.setInitialDelay(1500);
+		timer.start();
 		
 	}
 	
-	public void addLevelOne() {
-		int x = 65;
-		int y = 20;
-		for (int i = 1; i <= 6; i++) {
-			for (int j = 1; j <= 6; j++) {
-				if ((i == 2 || i == 5) && (j == 2 || j == 5)) {
-					SpecialBrick brick = new SpecialBrick(250 + i*x, 300 + j*y, "FireBall");
-					bricks.add(brick);
-				} else {
-					Brick brick = new Brick(250 + i*x, 300 + j*y);
-					bricks.add(brick);
-				}
-			}
+	public void addLevel(int level) {
+		switch (level) {
+			case 1: addLevelOne();
+					break;
 		}
+		
 	}
 	
 	@Override
@@ -117,24 +121,59 @@ public class Display extends JPanel implements ActionListener {
 	private void checkCollisions() throws LineUnavailableException, IOException {
 		if (ball.isCollidedWith(paddle)) {
 			ball.setVertDir("up");
-			if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (4*paddle.getWidth()/5)) {
-				ball.setHoDir("right");
-				ball.setHoSpeed(20);
-			}
-			else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (3*paddle.getWidth()/5)) {
+			if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (10*paddle.getWidth()/11)) {
 				ball.setHoDir("right");
 				ball.setHoSpeed(10);
+				ball.setVertSpeed(1);				
 			}
-			else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (2*paddle.getWidth()/5)) {
+			else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (9*paddle.getWidth()/11)) {
+				ball.setHoDir("right");
+				ball.setHoSpeed(8);
+				ball.setVertSpeed(3);
+			}
+			else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (8*paddle.getWidth()/11)) {
+				ball.setHoDir("right");
+				ball.setHoSpeed(6);
+				ball.setVertSpeed(5);
+			}
+			else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (7*paddle.getWidth()/11)) {
+				ball.setHoDir("right");
+				ball.setHoSpeed(4);
+				ball.setVertSpeed(7);
+			}
+			else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (6*paddle.getWidth()/11)) {
+				ball.setHoDir("right");
+				ball.setHoSpeed(2);
+				ball.setVertSpeed(9);
+			}
+			else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (5*paddle.getWidth()/11)) {
 				ball.setHoSpeed(0);
+				ball.setVertSpeed(10);
 			}
-			else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (paddle.getWidth()/5)) {
+			else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (4*paddle.getWidth()/11)) {
 				ball.setHoDir("left");
-				ball.setHoSpeed(10);
+				ball.setHoSpeed(2);
+				ball.setVertSpeed(9);
+			}
+			else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (3*paddle.getWidth()/11)) {
+				ball.setHoDir("left");
+				ball.setHoSpeed(4);
+				ball.setVertSpeed(7);
+			}
+			else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (2*paddle.getWidth()/11)) {
+				ball.setHoDir("left");
+				ball.setHoSpeed(6);
+				ball.setVertSpeed(5);
+			}
+			else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (paddle.getWidth()/11)) {
+				ball.setHoDir("left");
+				ball.setHoSpeed(8);
+				ball.setVertSpeed(3);
 			}
 			else if (ball.getRect().getMaxX() > paddle.getRect().getMinX()) {
 				ball.setHoDir("left");
-				ball.setHoSpeed(20);
+				ball.setHoSpeed(10);
+				ball.setVertSpeed(1);
 			}
 		}
 		Brick brickToRemove = null;
@@ -253,6 +292,25 @@ public class Display extends JPanel implements ActionListener {
 		public void keyReleased(KeyEvent e) {
 			paddle.keyReleased(e);
 		}
+	}
+	
+	// ------------- Levels -------------------------
+	
+	private void addLevelOne() {
+		int x = 65;
+		int y = 20;
+		for (int i = 1; i <= 6; i++) {
+			for (int j = 1; j <= 6; j++) {
+				if ((i == 2 || i == 5) && (j == 2 || j == 5)) {
+					SpecialBrick brick = new SpecialBrick(250 + i*x, 300 + j*y, "FireBall");
+					bricks.add(brick);
+				} else {
+					Brick brick = new Brick(250 + i*x, 300 + j*y);
+					bricks.add(brick);
+				}
+			}
+		}
+		
 	}
 
 
