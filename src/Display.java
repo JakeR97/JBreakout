@@ -21,6 +21,7 @@ public class Display extends JPanel implements ActionListener {
 	
 	private Paddle paddle;
 	private Ball ball;
+	private ArrayList<Ball> balls;
 	private Timer timer;
 	private ArrayList<Brick> bricks;
 	private boolean gameOver, levelWon;
@@ -39,7 +40,9 @@ public class Display extends JPanel implements ActionListener {
 		
 		//Initialize variables/objects
 		paddle = new Paddle(Constants.PAD_X_START, Constants.PAD_Y_START);
-		ball = new Ball(Constants.BALL_X_START, Constants.BALL_Y_START, 2);
+		ball = new Ball(Constants.BALL_X_START, Constants.BALL_Y_START);
+		balls = new ArrayList<Ball>();
+		balls.add(ball);
 		bricks = new ArrayList<Brick>();
 		gameOver = false;
 		levelWon = false;
@@ -110,8 +113,10 @@ public class Display extends JPanel implements ActionListener {
 		try {
 			g2d.drawImage(paddle.getImage(), paddle.getX(),	paddle.getY(), 
 					paddle.getWidth(), paddle.getHeight(), this);
-			g2d.drawImage(ball.getImage(), ball.getX(), ball.getY(),
-					ball.getWidth(), ball.getHeight(), this);
+			for (Ball ball: balls) {
+				g2d.drawImage(ball.getImage(), ball.getX(), ball.getY(),
+						ball.getWidth(), ball.getHeight(), this);
+			}
 			for (Brick brick: bricks) {
 				g2d.drawImage(brick.getImage(), brick.getX(), brick.getY(),
 						brick.getWidth(), brick.getHeight(), this);
@@ -124,132 +129,145 @@ public class Display extends JPanel implements ActionListener {
 	
 	private void checkCollisions() {
 		//Ball and Paddle collision
-		if (ball.isCollidedWith(paddle)) {
-			ball.setVertDir("up");
-			if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (10*paddle.getWidth()/11)) {
-				ball.setHoDir("right");
-				ball.setHoSpeed(10);
-				ball.setVertSpeed(1);				
-			}
-			else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (9*paddle.getWidth()/11)) {
-				ball.setHoDir("right");
-				ball.setHoSpeed(8);
-				ball.setVertSpeed(3);
-			}
-			else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (8*paddle.getWidth()/11)) {
-				ball.setHoDir("right");
-				ball.setHoSpeed(6);
-				ball.setVertSpeed(5);
-			}
-			else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (7*paddle.getWidth()/11)) {
-				ball.setHoDir("right");
-				ball.setHoSpeed(4);
-				ball.setVertSpeed(7);
-			}
-			else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (6*paddle.getWidth()/11)) {
-				ball.setHoDir("right");
-				ball.setHoSpeed(2);
-				ball.setVertSpeed(9);
-			}
-			else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (5*paddle.getWidth()/11)) {
-				ball.setHoSpeed(0);
-				ball.setVertSpeed(10);
-			}
-			else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (4*paddle.getWidth()/11)) {
-				ball.setHoDir("left");
-				ball.setHoSpeed(2);
-				ball.setVertSpeed(9);
-			}
-			else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (3*paddle.getWidth()/11)) {
-				ball.setHoDir("left");
-				ball.setHoSpeed(4);
-				ball.setVertSpeed(7);
-			}
-			else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (2*paddle.getWidth()/11)) {
-				ball.setHoDir("left");
-				ball.setHoSpeed(6);
-				ball.setVertSpeed(5);
-			}
-			else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (paddle.getWidth()/11)) {
-				ball.setHoDir("left");
-				ball.setHoSpeed(8);
-				ball.setVertSpeed(3);
-			}
-			else if (ball.getRect().getMaxX() > paddle.getRect().getMinX()) {
-				ball.setHoDir("left");
-				ball.setHoSpeed(10);
-				ball.setVertSpeed(1);
-			}
-		}
-		
-		//Ball and brick collision
-		Brick brickToRemove = null;
-		for (Brick brick: bricks) {
-			if (ball.isCollidedWith(brick)) {
-				brickToRemove = brick;
-				if (!ball.getSpecial().equals("FireBall")) {
-					if (Math.abs(ball.getRect().getMinY() - brick.getRect().getMaxY()) <= 10) {
-						ball.setVertDir("down");
-					}
-					if (Math.abs(ball.getRect().getMaxY() - brick.getRect().getMinY()) <= 10) {
-						ball.setVertDir("up");
-					}
-					if (Math.abs(ball.getRect().getMinX() - brick.getRect().getMaxX()) <= 10) {
-						ball.setHoDir("right");
-					}
-					if (Math.abs(ball.getRect().getMaxX() - brick.getRect().getMinX()) <= 10) {
-						ball.setHoDir("left");
-					}
+		Ball balltoAdd = null;
+		for (Ball ball: balls) {
+			if (ball.isCollidedWith(paddle)) {
+				ball.setVertDir("up");
+				if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (10*paddle.getWidth()/11)) {
+					ball.setHoDir("right");
+					ball.setHoSpeed(10);
+					ball.setVertSpeed(1);				
 				}
-				if (brick.getClass() == SpecialBrick.class) {
-					String power = ((SpecialBrick) brick).getPowerUp();
-					java.util.Timer specTimer = new java.util.Timer("Special Timer");
-					int x = paddle.getX();
-					int y = paddle.getY();
-					//Big Paddle brick
-					if (power.equals("BigPaddle")) {
-						paddle = new SpecialPaddle(x, y, "Long");
-						specTimer.schedule(new TimerTask() {
-							public void run() {
-								paddle = new Paddle(paddle.getX(), paddle.getY());
-							}
-						}, 10000);
-					//Small paddle brick
-					} else if (power.equals("SmallPaddle")) {
-						paddle = new SpecialPaddle(x, y, "Short");	
-						specTimer.schedule(new TimerTask() {
-							public void run() {
-								paddle = new Paddle(paddle.getX(), paddle.getY());
-							}
-						}, 10000);
-					//Fireball brick
-					} else if (power.equals("FireBall")) {
-						ball.setSpecial("FireBall");
-						specTimer.schedule(new TimerTask() {
-							public void run() {
-								ball.setSpecial("");
-							}
-						}, 10000);
-					} else if (power.equals("SpeedUp")) {
-						paddle.setPaddleSpeed(18);
-						specTimer.schedule(new TimerTask() {
-							public void run() {
-								paddle.setPaddleSpeed(12);
-							}
-						}, 10000);
-					} else if (power.equals("SlowDown")) {
-						paddle.setPaddleSpeed(6);
-						specTimer.schedule(new TimerTask() {
-							public void run() {
-								paddle.setPaddleSpeed(12);
-							}
-						}, 10000);
-					}					
+				else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (9*paddle.getWidth()/11)) {
+					ball.setHoDir("right");
+					ball.setHoSpeed(8);
+					ball.setVertSpeed(3);
+				}
+				else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (8*paddle.getWidth()/11)) {
+					ball.setHoDir("right");
+					ball.setHoSpeed(6);
+					ball.setVertSpeed(5);
+				}
+				else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (7*paddle.getWidth()/11)) {
+					ball.setHoDir("right");
+					ball.setHoSpeed(4);
+					ball.setVertSpeed(7);
+				}
+				else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (6*paddle.getWidth()/11)) {
+					ball.setHoDir("right");
+					ball.setHoSpeed(2);
+					ball.setVertSpeed(9);
+				}
+				else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (5*paddle.getWidth()/11)) {
+					ball.setHoSpeed(0);
+					ball.setVertSpeed(10);
+				}
+				else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (4*paddle.getWidth()/11)) {
+					ball.setHoDir("left");
+					ball.setHoSpeed(2);
+					ball.setVertSpeed(9);
+				}
+				else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (3*paddle.getWidth()/11)) {
+					ball.setHoDir("left");
+					ball.setHoSpeed(4);
+					ball.setVertSpeed(7);
+				}
+				else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (2*paddle.getWidth()/11)) {
+					ball.setHoDir("left");
+					ball.setHoSpeed(6);
+					ball.setVertSpeed(5);
+				}
+				else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (paddle.getWidth()/11)) {
+					ball.setHoDir("left");
+					ball.setHoSpeed(8);
+					ball.setVertSpeed(3);
+				}
+				else if (ball.getRect().getMaxX() > paddle.getRect().getMinX()) {
+					ball.setHoDir("left");
+					ball.setHoSpeed(10);
+					ball.setVertSpeed(1);
 				}
 			}
+			
+			//Ball and brick collision
+			Brick brickToRemove = null;
+			for (Brick brick: bricks) {
+				if (ball.isCollidedWith(brick)) {
+					brickToRemove = brick;
+					if (!ball.getSpecial().equals("FireBall")) {
+						if (Math.abs(ball.getRect().getMinY() - brick.getRect().getMaxY()) <= 10) {
+							ball.setVertDir("down");
+						}
+						if (Math.abs(ball.getRect().getMaxY() - brick.getRect().getMinY()) <= 10) {
+							ball.setVertDir("up");
+						}
+						if (Math.abs(ball.getRect().getMinX() - brick.getRect().getMaxX()) <= 10) {
+							ball.setHoDir("right");
+						}
+						if (Math.abs(ball.getRect().getMaxX() - brick.getRect().getMinX()) <= 10) {
+							ball.setHoDir("left");
+						}
+					}
+					if (brick.getClass() == SpecialBrick.class) {
+						String power = ((SpecialBrick) brick).getPowerUp();
+						java.util.Timer specTimer = new java.util.Timer("Special Timer");
+						int x = paddle.getX();
+						int y = paddle.getY();
+						//Big Paddle brick
+						if (power.equals("BigPaddle")) {
+							paddle = new SpecialPaddle(x, y, "Long");
+							specTimer.schedule(new TimerTask() {
+								public void run() {
+									paddle = new Paddle(paddle.getX(), paddle.getY());
+								}
+							}, 10000);
+						//Small paddle brick
+						} else if (power.equals("SmallPaddle")) {
+							paddle = new SpecialPaddle(x, y, "Short");	
+							specTimer.schedule(new TimerTask() {
+								public void run() {
+									paddle = new Paddle(paddle.getX(), paddle.getY());
+								}
+							}, 10000);
+						//Fireball brick
+						} else if (power.equals("FireBall")) {
+							ball.setSpecial("FireBall");
+							specTimer.schedule(new TimerTask() {
+								public void run() {
+									ball.setSpecial("");
+								}
+							}, 10000);
+						//Fast paddle brick
+						} else if (power.equals("SpeedUp")) {
+							paddle.setPaddleSpeed(18);
+							specTimer.schedule(new TimerTask() {
+								public void run() {
+									paddle.setPaddleSpeed(12);
+								}
+							}, 10000);
+						//Slow paddle brick
+						} else if (power.equals("SlowDown")) {
+							paddle.setPaddleSpeed(6);
+							specTimer.schedule(new TimerTask() {
+								public void run() {
+									paddle.setPaddleSpeed(12);
+								}
+							}, 10000);
+						//Multiball brick
+						} else if (power.equals("MultiBall")) {
+							Ball newBall = new Ball(ball.getX(), ball.getY());
+							newBall.setVertSpeed(ball.getVertSpeed() - 5);
+							balltoAdd = newBall;
+						}
+					}
+				}
+			}
+			if (brickToRemove != null) {
+				bricks.remove(brickToRemove);
+			}
 		}
-		if (brickToRemove != null) {
-			bricks.remove(brickToRemove);
+		if (balltoAdd != null) {
+			balls.add(balltoAdd);
 		}
 	}
 	
@@ -261,12 +279,13 @@ public class Display extends JPanel implements ActionListener {
 	
 	public void winLevel() {
 		levelWon = true;
+		balls.clear();
+		ball = new Ball(Constants.BALL_X_START, Constants.BALL_Y_START);
+		balls.add(ball);
 		currentLevel++;
 		addLevel(currentLevel);
 		paddle.setX(Constants.PAD_X_START);
 		paddle.setY(Constants.PAD_Y_START);
-		ball.setX(Constants.BALL_X_START);
-		ball.setY(Constants.BALL_Y_START);
 		timer.stop();
 		timer.setInitialDelay(2000);
 		timer.start();
@@ -278,9 +297,16 @@ public class Display extends JPanel implements ActionListener {
 		if (levelWon) {
 			levelWon = false;
 		}
+		Ball ballToRemove = null;
 		paddle.move();
-		ball.move();
-		if (ball.checkBounds()) {
+		for (Ball ball: balls) {
+			ball.move();
+			if (ball.checkBounds()) {
+				ballToRemove = ball;
+			}
+		}
+		balls.remove(ballToRemove);
+		if (balls.isEmpty()) {
 			loseLevel();
 			timer.stop();
 		}
@@ -321,7 +347,7 @@ public class Display extends JPanel implements ActionListener {
 					bricks.add(brick);
 				}
 			}
-		}	
+		}
 	}
 	
 	private void addLevelTwo() {
@@ -334,7 +360,7 @@ public class Display extends JPanel implements ActionListener {
 					bricks.add(brick);
 				}
 				else if((i == 4 || i == 5) && j == 5) {
-					SpecialBrick brick = new SpecialBrick(25 + i*x, 100 + j*y, "SlowDown");
+					SpecialBrick brick = new SpecialBrick(25 + i*x, 100 + j*y, "MultiBall");
 					bricks.add(brick);
 				}
 				else if (j == 6 && (i == 2 || i == 7)) {
@@ -366,11 +392,7 @@ public class Display extends JPanel implements ActionListener {
 		}
 	}
 	
-	
-	
-	
-	
-	
+	@SuppressWarnings("unused")
 	private void addLoss() {
 		int x = 65;
 		int y = 20;

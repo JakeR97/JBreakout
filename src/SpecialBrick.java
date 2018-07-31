@@ -23,6 +23,9 @@ public class SpecialBrick extends Brick {
 		} else if (powerUp.equals("SpeedUp")) {
 			ImageIcon ii = new ImageIcon("Images/SpeedUp.png");
 			this.setImage(ii.getImage());
+		} else if (powerUp.equals("MultiBall")) {
+			ImageIcon ii = new ImageIcon("Images/MultiBall.png");
+			this.setImage(ii.getImage());
 		}
 	}
 	

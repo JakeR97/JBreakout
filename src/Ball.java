@@ -1,3 +1,5 @@
+import java.util.Random;
+
 import javax.swing.ImageIcon;
 
 @SuppressWarnings("serial")
@@ -9,7 +11,9 @@ public class Ball extends Sprite {
 	private int hoSpeed;
 	private String spec;
 
-	public Ball(int x, int y, int ball) {
+	public Ball(int x, int y) {
+		Random rand = new Random();
+		int ball = rand.nextInt(5);
 		setX(x);
 		setY(y);
 		setVisible(true);
