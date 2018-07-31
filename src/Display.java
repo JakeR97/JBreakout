@@ -28,6 +28,7 @@ public class Display extends JPanel implements ActionListener {
 	private boolean gameOver, levelWon;
 	private Image background;
 	private JLabel count3, count2, count1;
+	private int currentLevel;
 
 	public Display() throws InterruptedException {
 		initialize();
@@ -39,8 +40,8 @@ public class Display extends JPanel implements ActionListener {
 		setDoubleBuffered(true);		
 		
 		//Initialize variables/objects
-		paddle = new Paddle(400, 1000);
-		ball = new Ball(400 + paddle.getWidth()/2, 985, 2);
+		paddle = new Paddle(Constants.PAD_X_START, Constants.PAD_Y_START);
+		ball = new Ball(Constants.BALL_X_START, Constants.BALL_Y_START, 2);
 		bricks = new ArrayList<Brick>();
 		gameOver = false;
 		levelWon = false;
@@ -58,7 +59,8 @@ public class Display extends JPanel implements ActionListener {
 		ImageIcon ii = new ImageIcon("Images/Background.png");
 		background = ii.getImage();
 		
-		addLevel(1);	
+		currentLevel = 2;
+		addLevel(currentLevel);	
 		
 		timer = new Timer(10, this);
 		timer.setInitialDelay(1500);
@@ -69,6 +71,8 @@ public class Display extends JPanel implements ActionListener {
 	public void addLevel(int level) {
 		switch (level) {
 			case 1: addLevelOne();
+					break;
+			case 2: addLevelTwo();
 					break;
 		}
 		
@@ -255,7 +259,19 @@ public class Display extends JPanel implements ActionListener {
 	public void winLevel() {
 		ball.setVertSpeed(0);
 		ball.setHoSpeed(0);
+		paddle.setPaddleSpeed(0);
 		levelWon = true;
+		addLevel(currentLevel);
+		paddle.setX(Constants.PAD_X_START);
+		paddle.setY(Constants.PAD_Y_START);
+		ball.setX(Constants.BALL_X_START);
+		ball.setY(Constants.BALL_Y_START);
+		try {
+			timer.wait(3000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
 	}
 	
 	@Override
@@ -268,7 +284,6 @@ public class Display extends JPanel implements ActionListener {
 		}
 		if (bricks.isEmpty()) {
 			winLevel();
-			timer.stop();
 		}
 		try {
 			checkCollisions();
@@ -309,8 +324,36 @@ public class Display extends JPanel implements ActionListener {
 					bricks.add(brick);
 				}
 			}
+		}		
+	}
+	
+	private void addLevelTwo() {
+		int x = 65;
+		int y = 20;
+		for (int i = 1; i <= 10; i++) {
+			for (int j = 1; j <= 10; j++) {
+				if (j == 5 && (i == 3 || i == 8)) {
+					SpecialBrick brick = new SpecialBrick(100 + i*x, 100 + j*y, "BigPaddle");
+					bricks.add(brick);
+				}
+				else if((i == 5 || i == 6) && j == 5) {
+					SpecialBrick brick = new SpecialBrick(100 + i*x, 100 + j*y, "SlowDown");
+					bricks.add(brick);
+				}
+				else if (j == 6 && (i == 3 || i == 8)) {
+					SpecialBrick brick = new SpecialBrick(100 + i*x, 100 + j*y, "SmallPaddle");
+					bricks.add(brick);
+				}
+				else if((i == 5 || i == 6) && j ==6) {
+					SpecialBrick brick = new SpecialBrick(100 + i*x, 100 + j*y, "SpeedUp");
+					bricks.add(brick);
+				}
+				else if (i == 1 || i == 3 || i == 5 || i == 6 || i == 8 || i == 10 || j == 1 || j == 10) {
+					Brick brick = new Brick(100 + i*x, 100 + j*y);
+					bricks.add(brick);
+				}
+			}
 		}
-		
 	}
 
 
