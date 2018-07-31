@@ -2,58 +2,55 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.sound.sampled.LineUnavailableException;
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.Timer;
 
-@SuppressWarnings("serial")
-public class BreakoutGame extends JFrame implements ActionListener {
+public class Display extends JPanel implements ActionListener {
 	
 	private Paddle paddle;
 	private Ball ball;
 	private Timer timer;
 	private ArrayList<Brick> bricks;
 	private boolean gameOver, levelWon;
-	
-	public static void main(String[] arg) {
-		new BreakoutGame();
-	}	
-	
-	public BreakoutGame() {
-		this.setTitle("Breakout");
-		this.setVisible(true);
-		this.setSize(Constants.WIDTH, Constants.HEIGHT);
-		this.setResizable(false);
-		this.addKeyListener(new MyKeyAdapter());
-		gameOver = false;
-		levelWon = false;
+	private Image background;
+
+	public Display() {
+		initialize();
+	}
+
+	private void initialize() {
+		addKeyListener(new MyKeyAdapter());
+		setFocusable(true);
+		setDoubleBuffered(true);
 		
-		this.setContentPane(new BackgroundPanel());
+		timer = new Timer(15, this);
+		timer.start();
 		
-		ImageIcon ii = new ImageIcon("Images/Ball1.png");
-		this.setIconImage(ii.getImage());
-		
-		timer = new Timer();
-		timer.scheduleAtFixedRate(new ScheduleTask(), 1000, 15);
-		
+		//Initialize variables/objects
 		paddle = new Paddle(400, 1000);
 		ball = new Ball(400 + paddle.getWidth()/2, 985, 2);
 		bricks = new ArrayList<Brick>();
+		gameOver = false;
+		levelWon = false;
+		
+		//Background
+		ImageIcon ii = new ImageIcon("Images/Background.png");
+		background = ii.getImage();
 		
 		addLevelOne();
 
-		revalidate();
-		repaint();
-		
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 	}
 	
@@ -74,9 +71,9 @@ public class BreakoutGame extends JFrame implements ActionListener {
 	}
 	
 	@Override
-	public void paint(Graphics g) {
-		super.paint(g); 
-		
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.drawImage(background, 0, 0, null);
 		
 		Graphics2D g2d = (Graphics2D) g;
 		
@@ -100,7 +97,7 @@ public class BreakoutGame extends JFrame implements ActionListener {
 		}
 		
 	}
-
+	
 	private void drawObjects(Graphics2D g2d) {
 		try {
 			g2d.drawImage(paddle.getImage(), paddle.getX(),	paddle.getY(), 
@@ -117,27 +114,27 @@ public class BreakoutGame extends JFrame implements ActionListener {
 		
 	}
 	
-	private void checkCollisions() {
+	private void checkCollisions() throws LineUnavailableException, IOException {
 		if (ball.isCollidedWith(paddle)) {
 			ball.setVertDir("up");
 			if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (4*paddle.getWidth()/5)) {
 				ball.setHoDir("right");
-				ball.setHoSpeed(10);
+				ball.setHoSpeed(20);
 			}
 			else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (3*paddle.getWidth()/5)) {
 				ball.setHoDir("right");
-				ball.setHoSpeed(5);
+				ball.setHoSpeed(10);
 			}
 			else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (2*paddle.getWidth()/5)) {
 				ball.setHoSpeed(0);
 			}
 			else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (paddle.getWidth()/5)) {
 				ball.setHoDir("left");
-				ball.setHoSpeed(5);
+				ball.setHoSpeed(10);
 			}
 			else if (ball.getRect().getMaxX() > paddle.getRect().getMinX()) {
 				ball.setHoDir("left");
-				ball.setHoSpeed(10);
+				ball.setHoSpeed(20);
 			}
 		}
 		Brick brickToRemove = null;
@@ -160,7 +157,7 @@ public class BreakoutGame extends JFrame implements ActionListener {
 				}
 				if (brick.getClass() == SpecialBrick.class) {
 					String power = ((SpecialBrick) brick).getPowerUp();
-					Timer specTimer = new Timer("Special Timer");
+					java.util.Timer specTimer = new java.util.Timer("Special Timer");
 					int x = paddle.getX();
 					int y = paddle.getY();
 					//Big Paddle brick
@@ -210,14 +207,6 @@ public class BreakoutGame extends JFrame implements ActionListener {
 		}
 	}
 	
-	public void actionPerformed(ActionEvent e) {
-		paddle.move();
-		ball.move();
-		ball.checkBounds();
-		checkCollisions();
-		repaint();
-	}
-	
 	public void loseLevel() {
 		ball.setVertSpeed(0);
 		ball.setHoSpeed(0);
@@ -230,7 +219,29 @@ public class BreakoutGame extends JFrame implements ActionListener {
 		levelWon = true;
 	}
 	
-// -------------------  CLASSES ------------------------------------------------- // 	
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		paddle.move();
+		ball.move();
+		if (ball.checkBounds()) {
+			loseLevel();
+			timer.stop();
+		}
+		if (bricks.isEmpty()) {
+			winLevel();
+			timer.stop();
+		}
+		try {
+			checkCollisions();
+		} catch (LineUnavailableException | IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}		
+		repaint();
+	}
+	
+	
+	// ------------- Classes ------------------------
 	
 	private class MyKeyAdapter extends KeyAdapter {
 		@Override
@@ -243,24 +254,8 @@ public class BreakoutGame extends JFrame implements ActionListener {
 			paddle.keyReleased(e);
 		}
 	}
+
+
 	
-	private class ScheduleTask extends TimerTask {
-
-		@Override
-		public void run() {
-			paddle.move();
-			ball.move();
-			if (ball.checkBounds()) {
-				loseLevel();
-			}
-			if (bricks.isEmpty()) {
-				winLevel();
-				timer.cancel();
-			}
-			checkCollisions();
-			repaint();			
-		}	
-	}	
+	
 }
-
-
