@@ -102,13 +102,17 @@ public class BreakoutGame extends JFrame implements ActionListener {
 	}
 
 	private void drawObjects(Graphics2D g2d) {
-		g2d.drawImage(paddle.getImage(), paddle.getX(), paddle.getY(), 
-				paddle.getWidth(), paddle.getHeight(), this);
-		g2d.drawImage(ball.getImage(), ball.getX(), ball.getY(),
-				ball.getWidth(), ball.getHeight(), this);
-		for (Brick brick: bricks) {
-			g2d.drawImage(brick.getImage(), brick.getX(), brick.getY(),
-					brick.getWidth(), brick.getHeight(), this);
+		try {
+			g2d.drawImage(paddle.getImage(), paddle.getX(),	paddle.getY(), 
+					paddle.getWidth(), paddle.getHeight(), this);
+			g2d.drawImage(ball.getImage(), ball.getX(), ball.getY(),
+					ball.getWidth(), ball.getHeight(), this);
+			for (Brick brick: bricks) {
+				g2d.drawImage(brick.getImage(), brick.getX(), brick.getY(),
+						brick.getWidth(), brick.getHeight(), this);
+			}
+		} catch (NullPointerException e) {
+			//Suppress the output of the NPE that doesnt cause issues
 		}
 		
 	}

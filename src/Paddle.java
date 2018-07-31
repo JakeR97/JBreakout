@@ -9,14 +9,16 @@ public class Paddle extends Sprite {
 	
 	
 	public Paddle(int x, int y) {
+		ImageIcon ii = new ImageIcon("Images/paddle.png");
+		this.setImage(ii.getImage());
+		
 		setX(x);
 		setY(y);
 		dx = 0;
 		paddleSpeed = 10;
 		this.setVisible(true);
 		
-		ImageIcon ii = new ImageIcon("Images/paddle.png");
-		this.setImage(ii.getImage());
+		
 		
 		this.setHeight(this.getImage().getHeight(null));
 		this.setWidth(this.getImage().getWidth(null));
