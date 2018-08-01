@@ -23,6 +23,7 @@ public class Menu extends JFrame implements ActionListener {
 	private JPanel menu, levelMenu;
 	private static final Font menuFont = new Font(Font.SANS_SERIF, Font.BOLD, 36);
 	private static final Color clear = new Color(0, 0, 0, 0);	
+	private SoundEffect music;
 	
 	public Menu() {
 		setTitle("Breakout");
@@ -31,6 +32,7 @@ public class Menu extends JFrame implements ActionListener {
 		setResizable(false);
 		setVisible(true);
 		setIconImage(new ImageIcon("Images/Ball1.png").getImage());
+		music = new SoundEffect("Sounds/MenuMusic.wav");
 		
 		addMenu();
 	}
@@ -79,6 +81,7 @@ public class Menu extends JFrame implements ActionListener {
 		subPanel.add(quit);
 		
 		this.add(menu);
+		music.loop();
 	}
 	
 	private void addLevelMenu() {
@@ -152,9 +155,11 @@ public class Menu extends JFrame implements ActionListener {
 			addMenu();
 		} else if (e.getSource() == start) {
 			this.dispose();
+			music.stop();
 			new Breakout();
 		} else if (e.getSource().getClass() == JButton.class) {
 			this.dispose();
+			music.stop();
 			new Breakout(levelList.indexOf(e.getSource()) + 1);
 		}
 		revalidate();

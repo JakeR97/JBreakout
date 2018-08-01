@@ -29,6 +29,7 @@ public class Display extends JPanel implements ActionListener {
 	private JLabel count3, count2, count1;
 	private int currentLevel;
 	private boolean paused;
+	private SoundEffect ballBrick, ballPaddle, music;
 
 	public Display() throws InterruptedException {
 		currentLevel = 1;
@@ -63,6 +64,11 @@ public class Display extends JPanel implements ActionListener {
 		count1.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 72));
 		count1.setForeground(Color.WHITE);
 		
+		//Sound effects
+		ballBrick = new SoundEffect("Sounds/BallBrick.wav");
+		ballPaddle = new SoundEffect("Sounds/BallPaddle.wav");
+		music = new SoundEffect("Sounds/LevelMusicCalm.wav");
+		
 		//Background
 		ImageIcon ii = new ImageIcon("Images/Background.png");
 		background = ii.getImage();
@@ -78,6 +84,7 @@ public class Display extends JPanel implements ActionListener {
 	public void addLevel(int level) {
 		switch (level) {
 			case 1: addLevelOne();
+					music.loop();
 					break;
 			case 2: addLevelTwo();
 					break;
@@ -138,7 +145,9 @@ public class Display extends JPanel implements ActionListener {
 		Ball balltoAdd = null;
 		for (Ball ball: balls) {
 			if (ball.isCollidedWith(paddle)) {
+				ballPaddle.play();
 				ball.setVertDir("up");
+				
 				if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (10*paddle.getWidth()/11)) {
 					ball.setHoDir("right");
 					ball.setHoSpeed(10);
@@ -199,6 +208,7 @@ public class Display extends JPanel implements ActionListener {
 			Brick brickToRemove = null;
 			for (Brick brick: bricks) {
 				if (ball.isCollidedWith(brick)) {
+					ballBrick.play();
 					brickToRemove = brick;
 					if (!ball.getSpecial().equals("FireBall")) {
 						if (Math.abs(ball.getRect().getMinY() - brick.getRect().getMaxY()) <= 10) {
