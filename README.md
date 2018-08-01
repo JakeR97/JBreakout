@@ -1,2 +1,2 @@
 # JBreakout
-This is a clone of the Atari game "Breakout" written in java
+This is a fairly simple Brick-Breaker game
