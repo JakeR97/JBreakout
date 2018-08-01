@@ -28,8 +28,15 @@ public class Display extends JPanel implements ActionListener {
 	private Image background;
 	private JLabel count3, count2, count1;
 	private int currentLevel;
+	private boolean paused;
 
 	public Display() throws InterruptedException {
+		currentLevel = 1;
+		initialize();
+	}
+
+	public Display(int level) throws InterruptedException {
+		currentLevel = level;
 		initialize();
 	}
 
@@ -60,7 +67,6 @@ public class Display extends JPanel implements ActionListener {
 		ImageIcon ii = new ImageIcon("Images/Background.png");
 		background = ii.getImage();
 		
-		currentLevel = 1;
 		addLevel(currentLevel);	
 		
 		timer = new Timer(10, this);
@@ -323,6 +329,16 @@ public class Display extends JPanel implements ActionListener {
 	private class MyKeyAdapter extends KeyAdapter {
 		@Override
 		public void keyPressed(KeyEvent e) {
+			if (e.getKeyCode() == 27 /*ESC*/ || e.getKeyCode() == 80 /*P*/) {
+				if (paused) {
+					timer.setInitialDelay(0);
+					timer.start();
+					paused = false;
+				} else {
+					timer.stop();
+					paused = true;
+				}
+			}
 			paddle.keyPressed(e);
 		}
 		
