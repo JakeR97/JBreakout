@@ -100,6 +100,9 @@ public class Display extends JPanel implements ActionListener {
 					music.stop();
 					music.loop();
 					break;
+			case 4: addLevelFour();
+					music.stop();
+					music.loop();
 		}
 		
 	}
@@ -381,6 +384,8 @@ public class Display extends JPanel implements ActionListener {
 				} else {
 					Brick brick = new Brick(100 + i*x, 300 + j*y);
 					bricks.add(brick);
+					brick.getWidth();
+					brick.getHeight();
 				}
 			}
 		}
@@ -428,7 +433,48 @@ public class Display extends JPanel implements ActionListener {
 		}
 	}
 	
-	@SuppressWarnings("unused")
+	private void addLevelFour() {
+		int x = 65;
+		int y = 20;
+		for (int i = 1; i <= 9; i++) {
+			for (int j = 1; j <= 40; j++) {
+				if (j == 37 && (i == 2 || i == 8)) {
+					SpecialBrick brick = new SpecialBrick(i*x, j*y, "BigPaddle");
+					bricks.add(brick);
+				}
+				else if (j == 35 && i == 5) {
+					SpecialBrick brick = new SpecialBrick(i*x, j*y, "SpeedUp");
+					bricks.add(brick);
+				}
+				else if (j == 28 && (i == 4 || i == 6)) {
+					SpecialBrick brick = new SpecialBrick(i*x, j*y, "SlowDown");
+					bricks.add(brick);
+				}
+				else if (j == 13 && (i == 4 || i == 6)) {
+					SpecialBrick brick = new SpecialBrick(i*x, j*y, "SmallPaddle");
+					bricks.add(brick);
+				}
+				else if (j == 20 && (i == 2 || i == 8)) {
+					SpecialBrick brick = new SpecialBrick(i*x, j*y, "FireBall");
+					bricks.add(brick);
+				}
+				else if ((j == 6 && i ==5) || (j == 4 && (i == 2 || i == 8))) {
+					SpecialBrick brick = new SpecialBrick(i*x, j*y, "MultiBall");
+					bricks.add(brick);
+				}
+				else if ((i == 1 || i == 9) || ((i == 2 || i == 8) && (j < 38 && j > 3)) ||
+						((i == 3 || i == 7) && (j < 35 && j > 6)) ||
+						((i == 4 || i == 6) && ((j < 32 && j > 9) || (j <= 3 || j >= 38))) ||
+						(i == 5 && (j <= 6 || j >= 35))) {
+					Brick brick = new Brick(i*x, j*y);
+					bricks.add(brick);
+				}
+			}
+		}
+	}
+	
+	
+	
 	private void addLoss() {
 		int x = 65;
 		int y = 20;
