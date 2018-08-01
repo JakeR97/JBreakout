@@ -13,7 +13,7 @@ public class Ball extends Sprite {
 
 	public Ball(int x, int y) {
 		Random rand = new Random();
-		int ball = rand.nextInt(5);
+		int ball = rand.nextInt(4) + 1;
 		setX(x);
 		setY(y);
 		setVisible(true);
