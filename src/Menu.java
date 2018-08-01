@@ -15,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+@SuppressWarnings("serial")
 public class Menu extends JFrame implements ActionListener {
 	
 	private JButton quit, levels, back, start;
