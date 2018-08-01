@@ -87,8 +87,12 @@ public class Display extends JPanel implements ActionListener {
 					music.loop();
 					break;
 			case 2: addLevelTwo();
+					music.stop();
+					music.loop();
 					break;
 			case 3: addLevelThree();
+					music.stop();
+					music.loop();
 					break;
 		}
 		
