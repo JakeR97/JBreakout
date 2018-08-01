@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -30,14 +31,25 @@ public class Menu extends JFrame implements ActionListener {
 		setSize(Constants.WIDTH, Constants.HEIGHT);
 		setResizable(false);
 		setVisible(true);
-		setIconImage(new ImageIcon("Images/Ball1.png").getImage());
-		music = new SoundEffect("Sounds/MenuMusic.wav");
+		setIconImage(new ImageIcon("src/Images/Ball1.png").getImage());
+		music = new SoundEffect("src/Sounds/MenuMusic.wav");
 		
 		addMenu();
 	}
+
+	public static void main(String[] args) {
+        
+        EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {                
+                Menu game = new Menu();
+                game.setVisible(true);                
+            }
+        });
+	}
 	
 	private void addMenu() {		
-		ImageIcon ii = new ImageIcon("Images/Background.png");
+		ImageIcon ii = new ImageIcon("src/Images/Background.png");
 		Image background = ii.getImage();
 		menu = new JPanel() {
 			@Override
@@ -76,7 +88,7 @@ public class Menu extends JFrame implements ActionListener {
 		levelList = new ArrayList<JButton>();
 		initLevels();
 		this.remove(menu);
-		ImageIcon ii = new ImageIcon("Images/Background.png");
+		ImageIcon ii = new ImageIcon("src/Images/Background.png");
 		Image background = ii.getImage();
 		levelMenu = new JPanel() {
 			@Override

@@ -10,7 +10,7 @@ public class Breakout extends JFrame {
 		setSize(Constants.WIDTH, Constants.HEIGHT);
 		setResizable(false);
 		setVisible(true);
-		setIconImage(new ImageIcon("Images/Ball1.png").getImage());
+		setIconImage(new ImageIcon("src/Images/Ball1.png").getImage());
 		
 		try {
 			add(new Display());
@@ -26,7 +26,7 @@ public class Breakout extends JFrame {
 		setSize(Constants.WIDTH, Constants.HEIGHT);
 		setResizable(false);
 		setVisible(true);
-		setIconImage(new ImageIcon("Images/Ball1.png").getImage());
+		setIconImage(new ImageIcon("src/Images/Ball1.png").getImage());
 		
 		try {
 			add(new Display(level));

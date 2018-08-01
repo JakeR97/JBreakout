@@ -9,7 +9,7 @@ public class Paddle extends Sprite {
 	
 	
 	public Paddle(int x, int y) {
-		ImageIcon ii = new ImageIcon("Images/paddle.png");
+		ImageIcon ii = new ImageIcon("src/Images/paddle.png");
 		this.setImage(ii.getImage());
 		
 		setX(x);

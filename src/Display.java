@@ -65,12 +65,12 @@ public class Display extends JPanel implements ActionListener {
 		count1.setForeground(Color.WHITE);
 		
 		//Sound effects
-		ballBrick = new SoundEffect("Sounds/BallBrick.wav");
-		ballPaddle = new SoundEffect("Sounds/BallPaddle.wav");
-		music = new SoundEffect("Sounds/LevelMusicCalm.wav");
+		ballBrick = new SoundEffect("src/Sounds/BallBrick.wav");
+		ballPaddle = new SoundEffect("src/Sounds/BallPaddle.wav");
+		music = new SoundEffect("src/Sounds/LevelMusicCalm.wav");
 		
 		//Background
-		ImageIcon ii = new ImageIcon("Images/Background.png");
+		ImageIcon ii = new ImageIcon("src/Images/Background.png");
 		background = ii.getImage();
 		
 		addLevel(currentLevel);	
