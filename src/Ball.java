@@ -1,3 +1,4 @@
+import java.net.URL;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
@@ -23,7 +24,8 @@ public class Ball extends Sprite {
 		hoSpeed = 2;
 		spec = "";
 		
-		ImageIcon ii = new ImageIcon("src/Images/Ball" + ball + ".png");
+		URL ballUrl = Ball.class.getResource("/Ball" + ball + ".png");
+		ImageIcon ii = new ImageIcon(ballUrl);
 		this.setImage(ii.getImage());
 		
 		this.setHeight(this.getImage().getHeight(null));

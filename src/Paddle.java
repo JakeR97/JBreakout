@@ -1,4 +1,5 @@
 import java.awt.event.KeyEvent;
+import java.net.URL;
 
 import javax.swing.ImageIcon;
 
@@ -9,7 +10,8 @@ public class Paddle extends Sprite {
 	
 	
 	public Paddle(int x, int y) {
-		ImageIcon ii = new ImageIcon("src/Images/paddle.png");
+		URL paddleUrl = Paddle.class.getResource("paddle.png");
+		ImageIcon ii = new ImageIcon(paddleUrl);
 		this.setImage(ii.getImage());
 		
 		setX(x);

@@ -1,3 +1,5 @@
+import java.net.URL;
+
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
@@ -10,7 +12,8 @@ public class Breakout extends JFrame {
 		setSize(Constants.WIDTH, Constants.HEIGHT);
 		setResizable(false);
 		setVisible(true);
-		setIconImage(new ImageIcon("src/Images/Ball1.png").getImage());
+		URL iconUrl = Breakout.class.getResource("/Ball1.png");
+		setIconImage(new ImageIcon(iconUrl).getImage());
 		
 		try {
 			add(new Display());
@@ -25,8 +28,8 @@ public class Breakout extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(Constants.WIDTH, Constants.HEIGHT);
 		setResizable(false);
-		setVisible(true);
-		setIconImage(new ImageIcon("src/Images/Ball1.png").getImage());
+		URL iconUrl = Breakout.class.getResource("/Ball1.png");
+		setIconImage(new ImageIcon(iconUrl).getImage());
 		
 		try {
 			add(new Display(level));

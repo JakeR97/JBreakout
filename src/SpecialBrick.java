@@ -1,3 +1,5 @@
+import java.net.URL;
+
 import javax.swing.ImageIcon;
 
 @SuppressWarnings("serial")
@@ -9,22 +11,28 @@ public class SpecialBrick extends Brick {
 		super(x, y);
 		powerUp = power;
 		if (powerUp.equals("FireBall")) {
-			ImageIcon ii = new ImageIcon("src/Images/FireBall.png");
+			URL fireUrl = SpecialBrick.class.getResource("/FireBall.png");
+			ImageIcon ii = new ImageIcon(fireUrl);
 			this.setImage(ii.getImage());
 		} else if (powerUp.equals("BigPaddle")) {
-			ImageIcon ii = new ImageIcon("src/Images/BigPaddle.png");
+			URL bigPadUrl = SpecialBrick.class.getResource("/BigPaddle.png");
+			ImageIcon ii = new ImageIcon(bigPadUrl);
 			this.setImage(ii.getImage());
 		} else if (powerUp.equals("SmallPaddle")) {
-			ImageIcon ii = new ImageIcon("src/Images/SmallPaddle.png");
+			URL smallPadUrl = SpecialBrick.class.getResource("/SmallPaddle.png");
+			ImageIcon ii = new ImageIcon(smallPadUrl);			
 			this.setImage(ii.getImage());
 		} else if (powerUp.equals("SlowDown")) {
-			ImageIcon ii = new ImageIcon("src/Images/SlowDown.png");
+			URL slowUrl = SpecialBrick.class.getResource("/SlowDown.png");
+			ImageIcon ii = new ImageIcon(slowUrl);
 			this.setImage(ii.getImage());
 		} else if (powerUp.equals("SpeedUp")) {
-			ImageIcon ii = new ImageIcon("src/Images/SpeedUp.png");
+			URL fastUrl = SpecialBrick.class.getResource("/SpeedUp.png");
+			ImageIcon ii = new ImageIcon(fastUrl);
 			this.setImage(ii.getImage());
 		} else if (powerUp.equals("MultiBall")) {
-			ImageIcon ii = new ImageIcon("src/Images/MultiBall.png");
+			URL multiUrl = SpecialBrick.class.getResource("/MultiBall.png");
+			ImageIcon ii = new ImageIcon(multiUrl);
 			this.setImage(ii.getImage());
 		}
 	}

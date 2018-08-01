@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.TimerTask;
 
@@ -65,12 +67,16 @@ public class Display extends JPanel implements ActionListener {
 		count1.setForeground(Color.WHITE);
 		
 		//Sound effects
-		ballBrick = new SoundEffect("src/Sounds/BallBrick.wav");
-		ballPaddle = new SoundEffect("src/Sounds/BallPaddle.wav");
-		music = new SoundEffect("src/Sounds/LevelMusicCalm.wav");
+		InputStream brickStream = Display.class.getResourceAsStream("/BallBrick.wav");
+		InputStream paddleStream = Display.class.getResourceAsStream("/BallPaddle.wav");
+		InputStream musicStream = Display.class.getResourceAsStream("/LevelMusicCalm.wav");
+		ballBrick = new SoundEffect(brickStream);
+		ballPaddle = new SoundEffect(paddleStream);
+		music = new SoundEffect(musicStream);
 		
 		//Background
-		ImageIcon ii = new ImageIcon("src/Images/Background.png");
+		URL backUrl = Display.class.getResource("/Background.png");
+		ImageIcon ii = new ImageIcon(backUrl);
 		background = ii.getImage();
 		
 		addLevel(currentLevel);	

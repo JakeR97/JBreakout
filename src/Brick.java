@@ -1,3 +1,5 @@
+import java.net.URL;
+
 import javax.swing.ImageIcon;
 
 @SuppressWarnings("serial")
@@ -9,7 +11,8 @@ public class Brick extends Sprite {
 		
 		this.setVisible(true);
 		
-		ImageIcon ii = new ImageIcon("src/Images/Brick.png");
+		URL brickUrl = Brick.class.getResource("/Brick.png");
+		ImageIcon ii = new ImageIcon(brickUrl);
 		this.setImage(ii.getImage());
 		
 		this.setHeight(this.getImage().getHeight(null));

@@ -7,6 +7,8 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
@@ -31,8 +33,10 @@ public class Menu extends JFrame implements ActionListener {
 		setSize(Constants.WIDTH, Constants.HEIGHT);
 		setResizable(false);
 		setVisible(true);
-		setIconImage(new ImageIcon("src/Images/Ball1.png").getImage());
-		music = new SoundEffect("src/Sounds/MenuMusic.wav");
+		URL ballUrl = Menu.class.getResource("/Ball1.png");
+		InputStream musicStream = Menu.class.getResourceAsStream("/MenuMusic.wav");
+		setIconImage(new ImageIcon(ballUrl).getImage());
+		music = new SoundEffect(musicStream);
 		
 		addMenu();
 	}
@@ -48,8 +52,9 @@ public class Menu extends JFrame implements ActionListener {
         });
 	}
 	
-	private void addMenu() {		
-		ImageIcon ii = new ImageIcon("src/Images/Background.png");
+	private void addMenu() {
+		URL backUrl = Menu.class.getResource("/Background.png");
+		ImageIcon ii = new ImageIcon(backUrl);
 		Image background = ii.getImage();
 		menu = new JPanel() {
 			@Override
@@ -88,7 +93,8 @@ public class Menu extends JFrame implements ActionListener {
 		levelList = new ArrayList<JButton>();
 		initLevels();
 		this.remove(menu);
-		ImageIcon ii = new ImageIcon("src/Images/Background.png");
+		URL backUrl = Menu.class.getResource("/Background.png");
+		ImageIcon ii = new ImageIcon(backUrl);
 		Image background = ii.getImage();
 		levelMenu = new JPanel() {
 			@Override

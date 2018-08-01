@@ -1,4 +1,6 @@
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.InputStream;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -7,11 +9,21 @@ import javax.sound.sampled.Clip;
 public class SoundEffect {
 		Clip clip;
 		
-		public SoundEffect(String soundFileName) {
-			
+		public SoundEffect(String soundFileName) {			
 			try {
 				File file = new File(soundFileName);
 				AudioInputStream sound = AudioSystem.getAudioInputStream(file);
+				clip = AudioSystem.getClip();
+				clip.open(sound);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		public SoundEffect(InputStream soundFileName) {
+			try {	
+				InputStream buffIn = new BufferedInputStream(soundFileName);
+				AudioInputStream sound = AudioSystem.getAudioInputStream(buffIn);
 				clip = AudioSystem.getClip();
 				clip.open(sound);
 			} catch (Exception e) {
