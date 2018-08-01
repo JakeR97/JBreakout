@@ -36,17 +36,6 @@ public class Menu extends JFrame implements ActionListener {
 		
 		addMenu();
 	}
-
-	public static void main(String[] args) {
-        
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {                
-                Menu game = new Menu();
-                game.setVisible(true);                
-            }
-        });
-	}
 	
 	private void addMenu() {		
 		ImageIcon ii = new ImageIcon("Images/Background.png");
