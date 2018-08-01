@@ -37,19 +37,4 @@ public class Breakout extends JFrame {
 		}
 	}
 	
-	public static void main(String[] args) {
-        
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {                
-                Breakout game = null;
-				game = new Breakout();
-                game.setVisible(true);                
-            }
-        });
-	}
-	
-
-	
-	
 }
