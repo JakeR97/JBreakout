@@ -475,6 +475,7 @@ public class Display extends JPanel implements ActionListener {
 	
 	
 	
+	@SuppressWarnings("unused")
 	private void addLoss() {
 		int x = 65;
 		int y = 20;
