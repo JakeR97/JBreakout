@@ -1,9 +1,12 @@
+import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.net.URL;
 
@@ -20,8 +23,10 @@ public class LoseMenu extends JFrame implements ActionListener {
 	private SoundEffect music;
 	private JPanel loseMenu;
 	private int level;
+	private JLabel backgr;
 	
-	public LoseMenu(int currentLevel) {
+	public LoseMenu(int currentLevel, JLabel backg) {
+		backgr = backg;
 		level = currentLevel;
 		setTitle("Breakout");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -44,14 +49,17 @@ public class LoseMenu extends JFrame implements ActionListener {
 	}
 	
 	private void addMenu() {
-		URL backUrl = Menu.class.getResource("/Background.png");
-		ImageIcon ii = new ImageIcon(backUrl);
-		Image background = ii.getImage();
 		loseMenu = new JPanel() {
 			@Override
 			public void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				g.drawImage(background, 0, 0, null);
+				backgr.getIcon().paintIcon(this, g, 0, 0);
+				g.setColor(Color.BLACK);
+				g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 72));
+				g.drawString("Game Over", 145, 180);
+				g.setColor(Color.RED);
+				g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 72));
+				g.drawString("Game Over", 150, 175);
 			}
 		};
 		loseMenu.setLayout(new FlowLayout());
@@ -68,6 +76,7 @@ public class LoseMenu extends JFrame implements ActionListener {
 		
 		this.add(loseMenu);
 		music.loop();
+		this.paint(this.getGraphics());
 	}
 	
 	@Override

@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -8,13 +9,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.TimerTask;
 
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -123,25 +128,25 @@ public class Display extends JPanel implements ActionListener {
 		
 		drawObjects(g2d);
 		
-		if (gameOver) {
-			g2d.setColor(Color.BLACK);
-			g2d.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 72));
-			g2d.drawString("Game Over", 145, 580);
-			g2d.setColor(Color.RED);
-			g2d.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 72));
-			g2d.drawString("Game Over", 150, 575);
-			Breakout parent = (Breakout) this.getParent().getParent().getParent().getParent();
-			music.stop();
-			parent.dispose();
-			new LoseMenu(currentLevel);
-			
-			
-		}
 		if (levelWon) {
 			g2d.setColor(Color.GREEN);
 			g2d.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 72));
 			g2d.drawString("Level Won!", 150, 575);
 		}
+		
+	}
+	
+	private BufferedImage getScreenshot(Component comp) {
+		BufferedImage bi = new BufferedImage(715, 1080, BufferedImage.TYPE_INT_RGB);
+		comp.paint(bi.getGraphics());
+		return bi;
+	}
+	
+	private void saveScreenshot(Component comp, String filename) throws IOException {
+		BufferedImage img = getScreenshot(comp);
+		File file = new File(filename);
+		ImageIO.write(img, "png", new File(filename));
+		revalidate();
 		
 	}
 	
@@ -314,6 +319,12 @@ public class Display extends JPanel implements ActionListener {
 		ball.setVertSpeed(0);
 		ball.setHoSpeed(0);
 		gameOver = true;
+		JLabel capture = new JLabel();
+		capture.setIcon(new ImageIcon(getScreenshot(this)));
+		((Breakout) this.getParent().getParent().getParent().getParent()).dispose();
+		music.stop();
+		new LoseMenu(currentLevel, capture);
+		
 	}
 	
 	public void winLevel() {
