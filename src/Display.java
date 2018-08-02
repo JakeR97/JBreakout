@@ -10,15 +10,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.TimerTask;
 
-import javax.imageio.ImageIO;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -32,12 +28,12 @@ public class Display extends JPanel implements ActionListener {
 	private ArrayList<Ball> balls;
 	private Timer timer;
 	private ArrayList<Brick> bricks;
-	private boolean gameOver, levelWon;
+	private boolean levelWon;
 	private Image background;
 	private JLabel count3, count2, count1;
 	private int currentLevel;
 	private boolean paused;
-	private SoundEffect ballBrick, ballPaddle, music;
+	private SoundEffect ballBrick, ballPaddle, music, fire, special;
 
 	public Display() throws InterruptedException {
 		currentLevel = 1;
@@ -60,7 +56,6 @@ public class Display extends JPanel implements ActionListener {
 		balls = new ArrayList<Ball>();
 		balls.add(ball);
 		bricks = new ArrayList<Brick>();
-		gameOver = false;
 		levelWon = false;
 		count3 = new JLabel("3");
 		count3.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 72));
@@ -76,9 +71,13 @@ public class Display extends JPanel implements ActionListener {
 		InputStream brickStream = Display.class.getResourceAsStream("/BallBrick.wav");
 		InputStream paddleStream = Display.class.getResourceAsStream("/BallPaddle.wav");
 		InputStream musicStream = Display.class.getResourceAsStream("/LevelMusicCalm.wav");
+		InputStream fireStream = Display.class.getResourceAsStream("/Fire.wav");
+		InputStream specialStream = Display.class.getResourceAsStream("/Special.wav");
 		ballBrick = new SoundEffect(brickStream);
 		ballPaddle = new SoundEffect(paddleStream);
 		music = new SoundEffect(musicStream);
+		fire = new SoundEffect(fireStream);
+		special = new SoundEffect(specialStream);
 		
 		//Background
 		URL backUrl = Display.class.getResource("/Background.png");
@@ -140,14 +139,6 @@ public class Display extends JPanel implements ActionListener {
 		BufferedImage bi = new BufferedImage(715, 1080, BufferedImage.TYPE_INT_RGB);
 		comp.paint(bi.getGraphics());
 		return bi;
-	}
-	
-	private void saveScreenshot(Component comp, String filename) throws IOException {
-		BufferedImage img = getScreenshot(comp);
-		File file = new File(filename);
-		ImageIO.write(img, "png", new File(filename));
-		revalidate();
-		
 	}
 	
 	private void drawObjects(Graphics2D g2d) {
@@ -253,6 +244,7 @@ public class Display extends JPanel implements ActionListener {
 						}
 					}
 					if (brick.getClass() == SpecialBrick.class) {
+						special.play();
 						String power = ((SpecialBrick) brick).getPowerUp();
 						java.util.Timer specTimer = new java.util.Timer("Special Timer");
 						int x = paddle.getX();
@@ -275,10 +267,12 @@ public class Display extends JPanel implements ActionListener {
 							}, 10000);
 						//Fireball brick
 						} else if (power.equals("FireBall")) {
+							fire.loop();
 							ball.setSpecial("FireBall");
 							specTimer.schedule(new TimerTask() {
 								public void run() {
 									ball.setSpecial("");
+									fire.stop();
 								}
 							}, 10000);
 						//Fast paddle brick
@@ -318,7 +312,6 @@ public class Display extends JPanel implements ActionListener {
 	public void loseLevel() {
 		ball.setVertSpeed(0);
 		ball.setHoSpeed(0);
-		gameOver = true;
 		JLabel capture = new JLabel();
 		capture.setIcon(new ImageIcon(getScreenshot(this)));
 		((Breakout) this.getParent().getParent().getParent().getParent()).dispose();
