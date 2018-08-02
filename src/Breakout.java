@@ -28,8 +28,7 @@ public class Breakout extends JFrame {
 		setSize(Constants.WIDTH, Constants.HEIGHT);
 		setResizable(false);
 		setVisible(true);
-		URL iconUrl = Breakout.class.getResource("/Ball1.png");
-		setIconImage(new ImageIcon(iconUrl).getImage());
+		setIconImage(Constants.ICON);
 		
 		try {
 			add(new Display(level));

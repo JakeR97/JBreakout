@@ -13,6 +13,7 @@ import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.TimerTask;
 
 import javax.swing.ImageIcon;
@@ -167,54 +168,104 @@ public class Display extends JPanel implements ActionListener {
 				ballPaddle.play();
 				ball.setVertDir("up");
 				
-				if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (10*paddle.getWidth()/11)) {
+				if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (20*paddle.getWidth()/21)) {
 					ball.setHoDir("right");
 					ball.setHoSpeed(10);
 					ball.setVertSpeed(1);				
 				}
-				else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (9*paddle.getWidth()/11)) {
+				else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (19*paddle.getWidth()/21)) {
+					ball.setHoDir("right");
+					ball.setHoSpeed(9);
+					ball.setVertSpeed(2);
+				}
+				else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (18*paddle.getWidth()/21)) {
 					ball.setHoDir("right");
 					ball.setHoSpeed(8);
 					ball.setVertSpeed(3);
 				}
-				else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (8*paddle.getWidth()/11)) {
+				else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (17*paddle.getWidth()/21)) {
+					ball.setHoDir("right");
+					ball.setHoSpeed(7);
+					ball.setVertSpeed(4);
+				}
+				else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (16*paddle.getWidth()/21)) {
 					ball.setHoDir("right");
 					ball.setHoSpeed(6);
 					ball.setVertSpeed(5);
 				}
-				else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (7*paddle.getWidth()/11)) {
+				else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (15*paddle.getWidth()/21)) {
+					ball.setHoDir("right");
+					ball.setHoSpeed(5);
+					ball.setVertSpeed(6);
+				}
+				else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (14*paddle.getWidth()/21)) {
 					ball.setHoDir("right");
 					ball.setHoSpeed(4);
 					ball.setVertSpeed(7);
 				}
-				else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (6*paddle.getWidth()/11)) {
+				else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (13*paddle.getWidth()/21)) {
+					ball.setHoDir("right");
+					ball.setHoSpeed(3);
+					ball.setVertSpeed(8);
+				}
+				else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (12*paddle.getWidth()/21)) {
 					ball.setHoDir("right");
 					ball.setHoSpeed(2);
 					ball.setVertSpeed(9);
 				}
-				else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (5*paddle.getWidth()/11)) {
-					ball.setHoSpeed(0);
+				else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (11*paddle.getWidth()/21)) {
+					ball.setHoDir("right");
+					ball.setHoSpeed(1);
 					ball.setVertSpeed(10);
 				}
-				else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (4*paddle.getWidth()/11)) {
+				else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (10*paddle.getWidth()/21)) {
+					ball.setHoSpeed(0);
+					ball.setVertSpeed(11);
+				}
+				else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (9*paddle.getWidth()/21)) {
+					ball.setHoDir("left");
+					ball.setHoSpeed(1);
+					ball.setVertSpeed(10);
+				}
+				else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (8*paddle.getWidth()/11)) {
 					ball.setHoDir("left");
 					ball.setHoSpeed(2);
 					ball.setVertSpeed(9);
 				}
-				else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (3*paddle.getWidth()/11)) {
+				else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (7*paddle.getWidth()/21)) {
+					ball.setHoDir("left");
+					ball.setHoSpeed(3);
+					ball.setVertSpeed(8);
+				}
+				else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (6*paddle.getWidth()/21)) {
 					ball.setHoDir("left");
 					ball.setHoSpeed(4);
 					ball.setVertSpeed(7);
 				}
-				else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (2*paddle.getWidth()/11)) {
+				else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (5*paddle.getWidth()/21)) {
+					ball.setHoDir("left");
+					ball.setHoSpeed(5);
+					ball.setVertSpeed(6);
+				}
+				else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (4*paddle.getWidth()/21)) {
 					ball.setHoDir("left");
 					ball.setHoSpeed(6);
 					ball.setVertSpeed(5);
 				}
-				else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (paddle.getWidth()/11)) {
+				else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (3*paddle.getWidth()/21)) {
+					ball.setHoDir("left");
+					ball.setHoSpeed(7);
+					ball.setVertSpeed(4);
+				}
+				else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (2*paddle.getWidth()/21)) {
 					ball.setHoDir("left");
 					ball.setHoSpeed(8);
 					ball.setVertSpeed(3);
+				}
+				else if (ball.getRect().getMinX() > paddle.getRect().getMinX() + (paddle.getWidth()/21)) {
+					ball.setHoDir("left");
+					ball.setHoSpeed(9);
+					ball.setVertSpeed(2);
 				}
 				else if (ball.getRect().getMaxX() > paddle.getRect().getMinX()) {
 					ball.setHoDir("left");
@@ -294,7 +345,8 @@ public class Display extends JPanel implements ActionListener {
 						//Multiball brick
 						} else if (power.equals("MultiBall")) {
 							Ball newBall = new Ball(ball.getX(), ball.getY());
-							newBall.setVertSpeed(ball.getVertSpeed() - 6);
+							Random rand = new Random();
+							newBall.setVertSpeed(rand.nextInt(9) + 1);
 							balltoAdd = newBall;
 						}
 					}
