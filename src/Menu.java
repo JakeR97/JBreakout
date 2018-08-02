@@ -29,9 +29,8 @@ public class Menu extends JFrame implements ActionListener {
 		setSize(Constants.WIDTH, Constants.HEIGHT);
 		setResizable(false);
 		setVisible(true);
-		URL ballUrl = Menu.class.getResource("/Ball1.png");
 		InputStream musicStream = Menu.class.getResourceAsStream("/MenuMusic.wav");
-		setIconImage(new ImageIcon(ballUrl).getImage());
+		setIconImage(Constants.ICON);
 		music = new SoundEffect(musicStream);
 		
 		addMenu();
