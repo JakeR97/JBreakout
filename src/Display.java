@@ -302,18 +302,18 @@ public class Display extends JPanel implements ActionListener {
 						int y = paddle.getY();
 						//Big Paddle brick
 						if (power.equals("BigPaddle")) {
-							paddle = new SpecialPaddle(x, y, "Long");
+							paddle = new SpecialPaddle(x - 55, y, "Long");
 							specTimer.schedule(new TimerTask() {
 								public void run() {
-									paddle = new Paddle(paddle.getX(), paddle.getY());
+									paddle = new Paddle(paddle.getX() + 55, paddle.getY());
 								}
 							}, 10000);
 						//Small paddle brick
 						} else if (power.equals("SmallPaddle")) {
-							paddle = new SpecialPaddle(x, y, "Short");	
+							paddle = new SpecialPaddle(x + 37 , y, "Short");	
 							specTimer.schedule(new TimerTask() {
 								public void run() {
-									paddle = new Paddle(paddle.getX(), paddle.getY());
+									paddle = new Paddle(paddle.getX() - 37, paddle.getY());
 								}
 							}, 10000);
 						//Fireball brick
