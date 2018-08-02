@@ -1,7 +1,5 @@
-import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -23,8 +21,6 @@ public class Menu extends JFrame implements ActionListener {
 	private JButton quit, levels, back, start;
 	private ArrayList<JButton> levelList;
 	private JPanel menu, levelMenu;
-	private static final Font menuFont = new Font(Font.SANS_SERIF, Font.BOLD, 36);
-	private static final Color clear = new Color(0, 0, 0, 0);	
 	private SoundEffect music;
 	
 	public Menu() {
@@ -65,17 +61,17 @@ public class Menu extends JFrame implements ActionListener {
 		};
 		menu.setLayout(new FlowLayout());
 		JPanel subPanel = new JPanel(new GridLayout(20, 2, 10, 10));
-		subPanel.setBackground(clear);
+		subPanel.setBackground(Constants.CLEAR);
 		menu.add(subPanel);
 		
 		start = new JButton("New Game");
-		start.setFont(menuFont);
+		start.setFont(Constants.MENU_FONT);
 		start.addActionListener(this);
 		quit = new JButton("Quit");
-		quit.setFont(menuFont);
+		quit.setFont(Constants.MENU_FONT);
 		quit.addActionListener(this);
 		levels = new JButton("Levels");
-		levels.setFont(menuFont);
+		levels.setFont(Constants.MENU_FONT);
 		levels.addActionListener(this);
 		
 		for (int i = 0; i < 7; i++) {
@@ -105,7 +101,7 @@ public class Menu extends JFrame implements ActionListener {
 		};
 		levelMenu.setLayout(new FlowLayout());
 		JPanel subPanel = new JPanel(new GridLayout(20, 2, 10, 10));
-		subPanel.setBackground(clear);
+		subPanel.setBackground(Constants.CLEAR);
 		
 		subPanel.add(new JLabel());
 		subPanel.add(new JLabel());
@@ -131,7 +127,7 @@ public class Menu extends JFrame implements ActionListener {
 		JButton level9 = new JButton("Level 9");
 		JButton level10 = new JButton("Level 10");
 		back = new JButton("Back");
-		back.setFont(menuFont);
+		back.setFont(Constants.MENU_FONT);
 		back.addActionListener(this);
 		levelList.add(level1);
 		levelList.add(level2);
@@ -144,7 +140,7 @@ public class Menu extends JFrame implements ActionListener {
 		levelList.add(level9);
 		levelList.add(level10);
 		for (JButton level: levelList) {
-			level.setFont(menuFont);
+			level.setFont(Constants.MENU_FONT);
 			level.addActionListener(this);
 		}
 		

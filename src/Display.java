@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.TimerTask;
 
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -123,9 +124,18 @@ public class Display extends JPanel implements ActionListener {
 		drawObjects(g2d);
 		
 		if (gameOver) {
+			g2d.setColor(Color.BLACK);
+			g2d.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 72));
+			g2d.drawString("Game Over", 145, 580);
 			g2d.setColor(Color.RED);
 			g2d.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 72));
 			g2d.drawString("Game Over", 150, 575);
+			Breakout parent = (Breakout) this.getParent().getParent().getParent().getParent();
+			music.stop();
+			parent.dispose();
+			new LoseMenu(currentLevel);
+			
+			
 		}
 		if (levelWon) {
 			g2d.setColor(Color.GREEN);
@@ -285,7 +295,7 @@ public class Display extends JPanel implements ActionListener {
 						//Multiball brick
 						} else if (power.equals("MultiBall")) {
 							Ball newBall = new Ball(ball.getX(), ball.getY());
-							newBall.setVertSpeed(ball.getVertSpeed() - 5);
+							newBall.setVertSpeed(ball.getVertSpeed() - 6);
 							balltoAdd = newBall;
 						}
 					}
@@ -425,7 +435,15 @@ public class Display extends JPanel implements ActionListener {
 		int y = 20;
 		for (int i = 1; i <= 7; i++) {
 			for (int j = 1; j <= 25; j++) {
-				if (j <= 2 || j >= 24 || i == 1 || i == 7 || (i == 3 && j >= 5) || (i == 5 && j <= 21)) {
+				if ((i == 3 && j == 5) || (i == 5 && j == 21)) {
+					SpecialBrick brick = new SpecialBrick(50 + i*x, 100 + j*y, "MultiBall");
+					bricks.add(brick);
+				}
+				else if ((i == 3 && j == 21) || (i == 5 && j == 5)) {
+					SpecialBrick brick = new SpecialBrick(50 + i*x, 100 + j*y,  "FireBall");
+					bricks.add(brick);
+				}
+				else if (j <= 2 || j >= 24 || i == 1 || i == 7 || (i == 3 && j >= 5) || (i == 5 && j <= 21)) {
 					Brick brick = new Brick (50 + i*x, 100 + j*y);
 					bricks.add(brick);
 				} 
