@@ -109,6 +109,14 @@ public class Display extends JPanel implements ActionListener {
 			case 4: addLevelFour();
 					music.stop();
 					music.loop();
+					break;
+			case 5: addLevelFive();
+					music.stop();
+					music.loop();
+					break;
+			default:
+					addLevelOne();
+					break;
 		}
 		
 	}
@@ -295,9 +303,12 @@ public class Display extends JPanel implements ActionListener {
 						}
 					}
 					if (brick.getClass() == SpecialBrick.class) {
-						special.play();
 						String power = ((SpecialBrick) brick).getPowerUp();
-						java.util.Timer specTimer = new java.util.Timer("Special Timer");
+						java.util.Timer specTimer = null;
+						if (power != "Hard") {
+							special.play();
+							specTimer = new java.util.Timer("Special Timer");
+						}
 						int x = paddle.getX();
 						int y = paddle.getY();
 						//Big Paddle brick
@@ -348,6 +359,14 @@ public class Display extends JPanel implements ActionListener {
 							Random rand = new Random();
 							newBall.setVertSpeed(rand.nextInt(9) + 1);
 							balltoAdd = newBall;
+						} else if (power.equals("Hard")) {
+							if (((SpecialBrick) brick).getHitsLeft() == 2) {
+								((SpecialBrick) brick).hitBrick();
+								URL crackedURL = SpecialBrick.class.getResource("/Cracked" + brick.getColor() + "Brick.png");
+								ImageIcon ii = new ImageIcon(crackedURL);
+								brick.setImage(ii.getImage());
+								brickToRemove = null;
+							}
 						}
 					}
 				}
@@ -547,6 +566,24 @@ public class Display extends JPanel implements ActionListener {
 		}
 	}
 	
+	private void addLevelFive() {
+		int x = 65;
+		int y = 20;
+		for (int i = 1; i <= 6; i++) {
+			for (int j = 1; j <= 6; j++) {
+				if ((i == 2 || i == 5) && (j == 2 || j == 5)) {
+					SpecialBrick brick = new SpecialBrick(100 + i*x, 300 + j*y, "FireBall");
+					bricks.add(brick);
+				} else {
+					SpecialBrick brick = new SpecialBrick(100 + i*x, 300 + j*y, "Hard");
+					bricks.add(brick);
+					brick.getWidth();
+					brick.getHeight();
+				}
+			}
+		}
+		
+	}
 	
 	
 	@SuppressWarnings("unused")

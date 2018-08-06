@@ -6,10 +6,12 @@ import javax.swing.ImageIcon;
 public class SpecialBrick extends Brick {
 
 	private String powerUp;
+	private int hitsLeft;
 	
 	public SpecialBrick(int x, int y, String power) {
 		super(x, y);
 		powerUp = power;
+		hitsLeft = 1;
 		if (powerUp.equals("FireBall")) {
 			URL fireUrl = SpecialBrick.class.getResource("/FireBall.png");
 			ImageIcon ii = new ImageIcon(fireUrl);
@@ -34,11 +36,21 @@ public class SpecialBrick extends Brick {
 			URL multiUrl = SpecialBrick.class.getResource("/MultiBall.png");
 			ImageIcon ii = new ImageIcon(multiUrl);
 			this.setImage(ii.getImage());
+		} else if (powerUp.equals("Hard")) {
+			hitsLeft = 2;
 		}
 	}
 	
 	public String getPowerUp() {
 		return powerUp;
+	}
+	
+	public int getHitsLeft() {
+		return hitsLeft;
+	}
+	
+	public void hitBrick() {
+		hitsLeft--;
 	}
 	
 	

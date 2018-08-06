@@ -4,14 +4,14 @@ import javax.swing.ImageIcon;
 
 @SuppressWarnings("serial")
 public class Brick extends Sprite {
+	
+	private String color;
 
 	public Brick(int x, int y) {
 		setX(x);
 		setY(y);
 		
 		this.setVisible(true);
-		
-		String color;		
 		if (y < 115) {
 			color = "Purple";
 		} else if (y < 230) {
@@ -39,6 +39,10 @@ public class Brick extends Sprite {
 		
 		this.setHeight(this.getImage().getHeight(null));
 		this.setWidth(this.getImage().getWidth(null));
+	}
+	
+	public String getColor() {
+		return color;
 	}
 	
 }
