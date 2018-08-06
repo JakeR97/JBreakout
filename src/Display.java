@@ -569,16 +569,41 @@ public class Display extends JPanel implements ActionListener {
 	private void addLevelFive() {
 		int x = 65;
 		int y = 20;
-		for (int i = 1; i <= 6; i++) {
-			for (int j = 1; j <= 6; j++) {
-				if ((i == 2 || i == 5) && (j == 2 || j == 5)) {
-					SpecialBrick brick = new SpecialBrick(100 + i*x, 300 + j*y, "FireBall");
+		for (int i = 1; i <= 9; i++) {
+			for (int j = 1; j <= 27; j++) {
+				if ((i == 1 || i == 9) && j == 27) {
+					SpecialBrick brick = new SpecialBrick(x*i, y*j, "SmallPaddle");
 					bricks.add(brick);
-				} else {
-					SpecialBrick brick = new SpecialBrick(100 + i*x, 300 + j*y, "Hard");
+				} else if ((i == 1 || i == 9) && (j > 18)) {
+					SpecialBrick brick = new SpecialBrick(x*i, y*j, "Hard", "Purple");
 					bricks.add(brick);
-					brick.getWidth();
-					brick.getHeight();
+				} else if ((i == 2 || i == 8) && (j < 22 && j > 8)) {
+					SpecialBrick brick = new SpecialBrick(x*i, y*j, "Hard", "Purple");
+					bricks.add(brick);
+				} else if ((i == 3 || i == 7) && (j == 5 || j == 14)) {
+					SpecialBrick brick = new SpecialBrick(x*i, y*j, "Hard", "Orange");
+					bricks.add(brick);
+				} else if ((i == 3 || i == 7) && (j < 19 && j > 4)) {
+					SpecialBrick brick = new SpecialBrick(x*i, y*j, "Hard", "Purple");
+					bricks.add(brick);
+				} else if ((i == 4 || i == 6) && j == 8) {
+					SpecialBrick brick = new SpecialBrick(x*i, y*j, "MultiBall");
+					bricks.add(brick);
+				} else if ((i == 4 || i == 6) && j == 25) {
+					SpecialBrick brick = new SpecialBrick(x*i, y*j, "SmallPaddle");
+					bricks.add(brick);
+				} else if ((i == 4 || i == 6) && (j == 6 || j == 15)) {
+					SpecialBrick brick = new SpecialBrick(x*i, y*j, "Hard", "Orange");
+					bricks.add(brick);
+				} else if ((i == 4 || i == 6) && (j < 26 && j > 2)) {
+					SpecialBrick brick = new SpecialBrick(x*i, y*j, "Hard", "Purple");
+					bricks.add(brick);
+				} else if (i == 5 && j == 15) {
+					SpecialBrick brick = new SpecialBrick(x*i, y*j, "Hard", "Orange");
+					bricks.add(brick);
+				} else if (i == 5 && (j < 19 && j > 2)) {
+					SpecialBrick brick = new SpecialBrick(x*i, y*j, "Hard", "Purple");
+					bricks.add(brick);
 				}
 			}
 		}
