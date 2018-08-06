@@ -41,6 +41,23 @@ public class Brick extends Sprite {
 		this.setWidth(this.getImage().getWidth(null));
 	}
 	
+	public Brick(int x, int y, String col) {
+		setX(x);
+		setY(y);
+		color = col;
+		try {
+			URL brickUrl = Brick.class.getResource("/" + color + "Brick.png");
+			ImageIcon ii = new ImageIcon(brickUrl);
+			this.setImage(ii.getImage());
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+			System.out.println(color);
+		}
+		
+		this.setHeight(this.getImage().getHeight(null));
+		this.setWidth(this.getImage().getWidth(null));
+	}
+	
 	public String getColor() {
 		return color;
 	}
