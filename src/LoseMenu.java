@@ -32,7 +32,7 @@ public class LoseMenu extends JFrame implements ActionListener {
 		setResizable(false);
 		setVisible(true);
 		URL ballUrl = Menu.class.getResource("/Ball1.png");
-		setIconImage(new ImageIcon(ballUrl).getImage());
+		setIconImage(Constants.ICON);
 		
 		retryLevel = new JButton("Retry Level");
 		retryLevel.setFont(Constants.MENU_FONT);
