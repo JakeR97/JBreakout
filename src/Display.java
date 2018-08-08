@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.TimerTask;
 
-import javax.sound.sampled.AudioInputStream;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
