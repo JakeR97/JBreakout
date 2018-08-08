@@ -29,7 +29,7 @@ public class Menu extends JFrame implements ActionListener {
 		setSize(Constants.WIDTH, Constants.HEIGHT);
 		setResizable(false);
 		setVisible(true);
-		InputStream musicStream = Menu.class.getResourceAsStream("/MenuMusic.wav");
+		InputStream musicStream = Menu.class.getResourceAsStream("/MainMenuMusic.wav");
 		setIconImage(Constants.ICON);
 		music = new SoundEffect(musicStream);
 		

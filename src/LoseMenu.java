@@ -41,7 +41,7 @@ public class LoseMenu extends JFrame implements ActionListener {
 		mainMenu.setFont(Constants.MENU_FONT);
 		mainMenu.addActionListener(this);
 		
-		InputStream musicStream = LoseMenu.class.getResourceAsStream("/GameOver.wav");
+		InputStream musicStream = LoseMenu.class.getResourceAsStream("/LoseMusic.wav");
 		music = new SoundEffect(musicStream);
 		addMenu();
 	}

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.TimerTask;
 
+import javax.sound.sampled.AudioInputStream;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -71,7 +72,7 @@ public class Display extends JPanel implements ActionListener {
 		//Sound effects
 		InputStream brickStream = Display.class.getResourceAsStream("/BallBrick.wav");
 		InputStream paddleStream = Display.class.getResourceAsStream("/BallPaddle.wav");
-		InputStream musicStream = Display.class.getResourceAsStream("/LevelMusicCalm.wav");
+		InputStream musicStream = Display.class.getResourceAsStream("/LevelMusic.wav");
 		InputStream fireStream = Display.class.getResourceAsStream("/Fire.wav");
 		InputStream specialStream = Display.class.getResourceAsStream("/Special.wav");
 		ballBrick = new SoundEffect(brickStream);
