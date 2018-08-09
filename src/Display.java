@@ -114,6 +114,10 @@ public class Display extends JPanel implements ActionListener {
 					music.stop();
 					music.loop();
 					break;
+			case 6: addLevelSix();
+					music.stop();
+					music.loop();
+					break;
 			default:
 					addLevelOne();
 					break;
@@ -610,6 +614,29 @@ public class Display extends JPanel implements ActionListener {
 		
 	}
 	
+	private void addLevelSix() {
+		int x = 65;
+		int y = 20;
+		for (int i = 1; i <= 9; i++) {
+			for (int j = 1; j <= 31; j++) {
+				if ((j == 18 || j == 19) && i == 5) {
+					SpecialBrick brick = new SpecialBrick(x*i, y*j, "MultiBall");
+					bricks.add(brick);
+				} else if (((j+2)%8 == 0) || ((j+1)%8 == 0)) {
+					SpecialBrick brick = new SpecialBrick(x*i, y*j, "Hard");
+					bricks.add(brick);
+				} else if ((j == 10 || j == 11 || j == 26 || j == 27) && 
+						(i != 3 && i != 7)) {
+					Brick brick = new Brick(x*i, y*j);
+					bricks.add(brick);
+				} else if ((j == 18 || j == 19) && 
+						(i != 1 && i != 5 && i != 9)) {
+					Brick brick = new Brick(x*i, y*j);
+					bricks.add(brick);
+				}
+			}
+		}
+	}
 	
 	@SuppressWarnings("unused")
 	private void addLoss() {
