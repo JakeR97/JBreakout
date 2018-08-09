@@ -5,6 +5,12 @@ import javax.swing.ImageIcon;
 @SuppressWarnings("serial")
 public class SpecialPaddle extends Paddle {
 
+	/** Creates a new paddle at specified location with a 
+	 * special qualifier e.g. short/long
+	 * @param x is x pos
+	 * @param y is y pos
+	 * @param spec is the special qualifier
+	 */
 	public SpecialPaddle(int x, int y, String spec) {
 		super(x, y);
 		if (spec.equals("Short")) {

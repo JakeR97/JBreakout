@@ -1,8 +1,17 @@
 import javax.swing.JFrame;
 
+/** This is the JFram in which the Display JPanels live
+ * 
+ * @author reardj3
+ * @version 1.0.2 (August 9th, 2018)
+ */
+
 @SuppressWarnings("serial")
 public class Breakout extends JFrame {
 	
+	/** The default constructor launches a new default 
+	 * display JPanel
+	 */
 	public Breakout() {
 		setTitle("Breakout");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -19,6 +28,10 @@ public class Breakout extends JFrame {
 		}
 	}
 	
+	/** The level specific constructor launches a new 
+	 * level specific Display JPanel
+	 * @param level
+	 */
 	public Breakout(int level) {
 		setTitle("Breakout");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);

@@ -12,6 +12,14 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+/**
+ * This is the menu that pops up after a player loses
+ * a level, allowing them to return to the main menu
+ * or retry the level
+ * 
+ * @author reardj3
+ *@version 1.0.2 (August 9th, 2018)
+ */
 @SuppressWarnings("serial")
 public class LoseMenu extends JFrame implements ActionListener {
 
@@ -21,6 +29,11 @@ public class LoseMenu extends JFrame implements ActionListener {
 	private int level;
 	private JLabel backgr;
 	
+	/** The constructor directly initializes all of the buttong
+	 * and background image
+	 * @param currentLevel is the level that was lost
+	 * @param backg is the image of the lost level
+	 */
 	public LoseMenu(int currentLevel, JLabel backg) {
 		backgr = backg;
 		level = currentLevel;
@@ -43,6 +56,9 @@ public class LoseMenu extends JFrame implements ActionListener {
 		addMenu();
 	}
 	
+	/** This method adds the menu to the screen,
+	 * including the Game Over text at the top
+	 */
 	private void addMenu() {
 		loseMenu = new JPanel() {
 			@Override
@@ -74,6 +90,7 @@ public class LoseMenu extends JFrame implements ActionListener {
 		this.paint(this.getGraphics());
 	}
 	
+	/** This method handles button presses within the menu */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == mainMenu) {

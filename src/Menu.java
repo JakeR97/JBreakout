@@ -1,4 +1,3 @@
-import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.GridLayout;
@@ -15,6 +14,14 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+/**
+ * This class is the main menu of the game,
+ * allowing a player to launch levels.
+ * 
+ * @author reardj3
+ * @version 1.0.2 (August 9th, 2018)
+ */
+
 @SuppressWarnings("serial")
 public class Menu extends JFrame implements ActionListener {
 	
@@ -23,6 +30,10 @@ public class Menu extends JFrame implements ActionListener {
 	private JPanel menu, levelMenu;
 	private SoundEffect music;
 	
+	/** The constructor for this class creates a main menu
+	 * for the "home page" of the game, as well as setting 
+	 * the background and music.
+	 */
 	public Menu() {
 		setTitle("Breakout");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -32,21 +43,13 @@ public class Menu extends JFrame implements ActionListener {
 		InputStream musicStream = Menu.class.getResourceAsStream("/MainMenuMusic.wav");
 		setIconImage(Constants.ICON);
 		music = new SoundEffect(musicStream);
-		
 		addMenu();
 	}
-
-	public static void main(String[] args) {
-        
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {                
-                Menu game = new Menu();
-                game.setVisible(true);                
-            }
-        });
-	}
 	
+	/** This method is responsible for adding the 
+	 * actual menu components to the JFrame such as the 
+	 * buttons, the background images, etc.
+	 */
 	private void addMenu() {
 		URL backUrl = Menu.class.getResource("/Background.png");
 		ImageIcon ii = new ImageIcon(backUrl);
@@ -83,7 +86,10 @@ public class Menu extends JFrame implements ActionListener {
 		this.add(menu);
 		music.loop();
 	}
-	
+
+	/** This method adds the level-sub menu allowing a player
+	 * to jump right in to any level he/she chooses
+	 */
 	private void addLevelMenu() {
 		levelList = new ArrayList<JButton>();
 		initLevels();
@@ -114,6 +120,9 @@ public class Menu extends JFrame implements ActionListener {
 		this.add(levelMenu);
 	}
 
+	/** This method is responsible for initializing
+	 * all of the buttons for the level sub-menu
+	 */
 	private void initLevels() {
 		JButton level1 = new JButton("Level 1");
 		JButton level2 = new JButton("Level 2");
@@ -145,6 +154,10 @@ public class Menu extends JFrame implements ActionListener {
 		
 	}
 
+	
+	/** This method handles all of the button 
+	 * presses within the menus
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == quit) {

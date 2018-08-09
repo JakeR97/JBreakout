@@ -4,7 +4,9 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.RenderingHints;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -21,6 +23,16 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+/**
+ * The Display class is the class that handles the playing of the game
+ * and all of the levels themselves. This is the most important class
+ * to the game.
+ * 
+ * @author reardj3
+ * @version 1.0.2 (August 9th, 2018)
+ *
+ */
+
 @SuppressWarnings("serial")
 public class Display extends JPanel implements ActionListener {
 	
@@ -31,25 +43,45 @@ public class Display extends JPanel implements ActionListener {
 	private ArrayList<Brick> bricks;
 	private boolean levelWon;
 	private Image background;
-	private JLabel count3, count2, count1;
 	private int currentLevel;
 	private boolean paused;
 	private SoundEffect ballBrick, ballPaddle, music, fire, special;
 
+	/** This constructor is used in the general case where
+	 * a specific level is not given, therefore the game
+	 * loads level one.
+	 * @throws InterruptedException
+	 */
 	public Display() throws InterruptedException {
 		currentLevel = 1;
 		initialize();
 	}
 
+	/** This constructor is used in the general case where
+	 * a specific level is given
+	 * @param level is the level to load in
+	 * @throws InterruptedException
+	 */
 	public Display(int level) throws InterruptedException {
 		currentLevel = level;
 		initialize();
 	}
 
+	/** This method sets up all required elements of the screen, including a paddle,
+	 * a ball, and the level itself. The method also initalizes several variables
+	 * such as the levelWon boolean.
+	 * @throws InterruptedException
+	 */
 	private void initialize() throws InterruptedException {
 		addKeyListener(new MyKeyAdapter());
 		setFocusable(true);
-		setDoubleBuffered(true);		
+		setDoubleBuffered(true);	
+		
+		// Make the cursor invisible when playing a level
+		BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+		java.awt.Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(
+		    cursorImg, new Point(0, 0), "blank cursor");
+		setCursor(blankCursor);
 		
 		//Initialize variables/objects
 		paddle = new Paddle(Constants.PAD_X_START, Constants.PAD_Y_START);
@@ -58,17 +90,8 @@ public class Display extends JPanel implements ActionListener {
 		balls.add(ball);
 		bricks = new ArrayList<Brick>();
 		levelWon = false;
-		count3 = new JLabel("3");
-		count3.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 72));
-		count3.setForeground(Color.WHITE);
-		count2 = new JLabel("2");
-		count2.setForeground(Color.WHITE);
-		count2.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 72));
-		count1 = new JLabel("2");
-		count1.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 72));
-		count1.setForeground(Color.WHITE);
 		
-		//Sound effects
+		//Initialize Sound effects
 		InputStream brickStream = Display.class.getResourceAsStream("/BallBrick.wav");
 		InputStream paddleStream = Display.class.getResourceAsStream("/BallPaddle.wav");
 		InputStream musicStream = Display.class.getResourceAsStream("/LevelMusic.wav");
@@ -80,19 +103,25 @@ public class Display extends JPanel implements ActionListener {
 		fire = new SoundEffect(fireStream);
 		special = new SoundEffect(specialStream);
 		
-		//Background
+		//Set Background image
 		URL backUrl = Display.class.getResource("/Background.png");
 		ImageIcon ii = new ImageIcon(backUrl);
 		background = ii.getImage();
 		
 		addLevel(currentLevel);	
 		
+		//Begin the game by repeatedly updating the frame with a timer
 		timer = new Timer(10, this);
 		timer.setInitialDelay(1500);
 		timer.start();
 		
 	}
 	
+	/** This is the method responsible for adding the levels.
+	 * Given a level to add, the method calls the applicable 
+	 * add level method, and re-loops the music
+	 * @param level is the level to add
+	 */
 	public void addLevel(int level) {
 		switch (level) {
 			case 1: addLevelOne();
@@ -125,6 +154,10 @@ public class Display extends JPanel implements ActionListener {
 		
 	}
 	
+	/** This method is responsible for the graphics of the game.
+	 * Each time the frame is updated by the game timer, this method
+	 * repaints all objects on the screen. 
+	 */
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -148,12 +181,20 @@ public class Display extends JPanel implements ActionListener {
 		
 	}
 	
+	/** This method is used to capture the current image of the screen.
+	 * It is used in order to display the image later on in the 
+	 * "level lost" screen
+	 * @param comp is the component to capture (usually "this")
+	 * @return the BufferedImage screenshot
+	 */
 	private BufferedImage getScreenshot(Component comp) {
 		BufferedImage bi = new BufferedImage(715, 1080, BufferedImage.TYPE_INT_RGB);
 		comp.paint(bi.getGraphics());
 		return bi;
 	}
 	
+	
+	/** This method is responsible for drawing all on screen objects */
 	private void drawObjects(Graphics2D g2d) {
 		try {
 			g2d.drawImage(paddle.getImage(), paddle.getX(),	paddle.getY(), 
@@ -172,6 +213,9 @@ public class Display extends JPanel implements ActionListener {
 		
 	}
 	
+	/** This method handles the game physics and checks what should be done at each update.
+	 * It checks for ball collisions with bricks and with the paddle, and handles the events.
+	 */
 	private void checkCollisions() {
 		//Ball and Paddle collision
 		Ball balltoAdd = null;
@@ -384,6 +428,10 @@ public class Display extends JPanel implements ActionListener {
 		}
 	}
 	
+	
+	/** This method takes a screenshot of the lost level and 
+	 * creates a new lose menu for the user.
+	 */
 	public void loseLevel() {
 		ball.setVertSpeed(0);
 		ball.setHoSpeed(0);
@@ -395,6 +443,9 @@ public class Display extends JPanel implements ActionListener {
 		
 	}
 	
+	/** This method advances the game to the next level after displaying 
+	 * the message "Level Won" to the player
+	 */
 	public void winLevel() {
 		levelWon = true;
 		balls.clear();
@@ -410,6 +461,10 @@ public class Display extends JPanel implements ActionListener {
 		
 	}
 	
+	/** This is the method that gets called at every "tick" of the timer.
+	 * It checks if the level is won, moves the ball(s), and calls
+	 * the check collisions method
+	 */
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		if (levelWon) {
@@ -438,6 +493,12 @@ public class Display extends JPanel implements ActionListener {
 	
 	// ------------- Classes ------------------------
 	
+	/** This class is used to accept input from the left and right
+	 * keys and make the paddle move accordingly. Additionally this
+	 * class also makes both the "P" and "Esc" keys pause buttons
+	 * @author reardj3
+	 *
+	 */
 	private class MyKeyAdapter extends KeyAdapter {
 		@Override
 		public void keyPressed(KeyEvent e) {
@@ -461,6 +522,13 @@ public class Display extends JPanel implements ActionListener {
 	}
 	
 	// ------------- Levels -------------------------
+	
+	
+	/** The following methods are all used to create the levels.
+	 * Each metod corresponds to one level and i created by placing 
+	 * bricks in a 9x40 grid using nested for loops
+	 */	
+	
 	
 	private void addLevelOne() {
 		int x = 65;

@@ -3,6 +3,11 @@ import java.util.Random;
 
 import javax.swing.ImageIcon;
 
+/**
+ * The class for the ablls of the game 
+ * @author reardj3
+ * @version 1.0.2 (August 9th, 2018)
+ */
 @SuppressWarnings("serial")
 public class Ball extends Sprite {
 	
@@ -12,6 +17,12 @@ public class Ball extends Sprite {
 	private int hoSpeed;
 	private String spec;
 
+	/** Creates a new ball at specified location
+	 * and sets its image to be a random image from
+	 * the group of ball images
+	 * @param x is x position
+	 * @param y is y position
+	 */
 	public Ball(int x, int y) {
 		Random rand = new Random();
 		int ball = rand.nextInt(4) + 1;
@@ -32,42 +43,61 @@ public class Ball extends Sprite {
 		this.setWidth(this.getImage().getWidth(null));		
 	}
 	
+	/** Sets the ball to travel up or down */
 	public void setVertDir (String str) {
 		vertDir = str;
 	}
 	
+	/** Sets the ball to travel left or right */
 	public void setHoDir(String str) {
 		hoDir = str;
 	}
 	
+	/**@return the horizontal direction of the ball */
 	public String getHoDir() {
 		return hoDir;
 	}
 	
+	/** Sets the speed (distance traveled per tick) of the ball
+	 * in the horizontal direction
+	 * @param speed - horizontal pixels to move per tick
+	 */
 	public void setHoSpeed(int speed) {
 		hoSpeed = speed;
 	}
 	
+	/** @return the horizontal speed of ball */
 	public int getHoSpeed() {
 		return hoSpeed;
 	}
 	
+	/** Sets the speed (distance traveled per tick) of the ball
+	 * in the vertical direction
+	 * @param speed - vertical pixels to move per tick
+	 */
 	public void setVertSpeed(int speed) {
 		vertSpeed = speed;
 	}
 	
+	/** @return the vertical speed of the ball */
 	public int getVertSpeed() {
 		return vertSpeed;
 	}
 	
+	/** Sets the special property of the ball, if there is any
+	 * e.g. fireball
+	 * @param special property of the ball
+	 */
 	public void setSpecial(String special) {
 		spec = special;
 	}
 	
+	/**@return the special property of the ball */
 	public String getSpecial() {
 		return spec;
 	}
 	
+	/** This method is responsible for the balls movement */
 	public void move() {
 		if (vertDir.equals("up")) {
 			this.setY(this.getY() - vertSpeed);
@@ -81,6 +111,11 @@ public class Ball extends Sprite {
 		}
 	}
 	
+	/** This method is for a ball being out of bounds,
+	 * as well as for bouncing balls off the sides and top
+	 * of the frame
+	 * @return true if the ball is below the paddle
+	 */
 	public boolean checkBounds() {
 		if (this.getY() < 10) {
 			vertDir = "down";

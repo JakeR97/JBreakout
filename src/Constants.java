@@ -4,6 +4,14 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 
+/** This interface holds all of the values
+ * that are used throughout the program
+ * 
+ * @author reardj3
+ * @version 1.0.2 (August 9th, 2018)
+ *
+ */
+
 public interface Constants {
 
 	public static final int WIDTH = 715;
