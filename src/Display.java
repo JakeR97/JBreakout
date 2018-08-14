@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -46,6 +47,7 @@ public class Display extends JPanel implements ActionListener {
 	private int currentLevel;
 	private boolean paused;
 	private SoundEffect ballBrick, ballPaddle, music, fire, special;
+	private int scale;
 
 	/** This constructor is used in the general case where
 	 * a specific level is not given, therefore the game
@@ -75,13 +77,17 @@ public class Display extends JPanel implements ActionListener {
 	private void initialize() throws InterruptedException {
 		addKeyListener(new MyKeyAdapter());
 		setFocusable(true);
-		setDoubleBuffered(true);	
+		setDoubleBuffered(true);        
 		
 		// Make the cursor invisible when playing a level
 		BufferedImage cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
 		java.awt.Cursor blankCursor = Toolkit.getDefaultToolkit().createCustomCursor(
 		    cursorImg, new Point(0, 0), "blank cursor");
 		setCursor(blankCursor);
+		
+		//Set scale
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		scale = (int) screenSize.getHeight()/1080;
 		
 		//Initialize variables/objects
 		paddle = new Paddle(Constants.PAD_X_START, Constants.PAD_Y_START);
@@ -107,7 +113,6 @@ public class Display extends JPanel implements ActionListener {
 		URL backUrl = Display.class.getResource("/Background.png");
 		ImageIcon ii = new ImageIcon(backUrl);
 		background = ii.getImage();
-		
 		addLevel(currentLevel);	
 		
 		//Begin the game by repeatedly updating the frame with a timer
@@ -161,7 +166,7 @@ public class Display extends JPanel implements ActionListener {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.drawImage(background, 0, 0, null);
+		g.drawImage(background, 0, 0, this);
 		
 		Graphics2D g2d = (Graphics2D) g;
 		
@@ -169,8 +174,8 @@ public class Display extends JPanel implements ActionListener {
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
-                RenderingHints.VALUE_RENDER_QUALITY);
-		
+                RenderingHints.VALUE_RENDER_SPEED);
+        
 		drawObjects(g2d);
 		
 		if (levelWon) {
@@ -188,7 +193,7 @@ public class Display extends JPanel implements ActionListener {
 	 * @return the BufferedImage screenshot
 	 */
 	private BufferedImage getScreenshot(Component comp) {
-		BufferedImage bi = new BufferedImage(715, 1080, BufferedImage.TYPE_INT_RGB);
+		BufferedImage bi = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_RGB);
 		comp.paint(bi.getGraphics());
 		return bi;
 	}
@@ -197,6 +202,10 @@ public class Display extends JPanel implements ActionListener {
 	/** This method is responsible for drawing all on screen objects */
 	private void drawObjects(Graphics2D g2d) {
 		try {
+		  //Set graphics
+	        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	        g2d.scale(screenSize.getHeight()/1080, screenSize.getHeight()/1080);
+		    g2d.drawImage(background, 0, 0, this);
 			g2d.drawImage(paddle.getImage(), paddle.getX(),	paddle.getY(), 
 					paddle.getWidth(), paddle.getHeight(), this);
 			for (Ball ball: balls) {
@@ -337,16 +346,16 @@ public class Display extends JPanel implements ActionListener {
 					ballBrick.play();
 					brickToRemove = brick;
 					if (!ball.getSpecial().equals("FireBall")) {
-						if (Math.abs(ball.getRect().getMinY() - brick.getRect().getMaxY()) <= 10) {
+						if (Math.abs(ball.getRect().getMinY() - brick.getRect().getMaxY()) <= (10 * scale)) {
 							ball.setVertDir("down");
 						}
-						if (Math.abs(ball.getRect().getMaxY() - brick.getRect().getMinY()) <= 10) {
+						if (Math.abs(ball.getRect().getMaxY() - brick.getRect().getMinY()) <= (10 * scale)) {
 							ball.setVertDir("up");
 						}
-						if (Math.abs(ball.getRect().getMinX() - brick.getRect().getMaxX()) <= 10) {
+						if (Math.abs(ball.getRect().getMinX() - brick.getRect().getMaxX()) <= (10 * scale)) {
 							ball.setHoDir("right");
 						}
-						if (Math.abs(ball.getRect().getMaxX() - brick.getRect().getMinX()) <= 10) {
+						if (Math.abs(ball.getRect().getMaxX() - brick.getRect().getMinX()) <= (10 * scale)) {
 							ball.setHoDir("left");
 						}
 					}
@@ -437,9 +446,11 @@ public class Display extends JPanel implements ActionListener {
 		ball.setHoSpeed(0);
 		JLabel capture = new JLabel();
 		capture.setIcon(new ImageIcon(getScreenshot(this)));
+        int x = this.getParent().getParent().getParent().getParent().getX();
+        int y = this.getParent().getParent().getParent().getParent().getY();
 		((Breakout) this.getParent().getParent().getParent().getParent()).dispose();
 		music.stop();
-		new LoseMenu(currentLevel, capture);
+		new LoseMenu(currentLevel, capture, x, y);
 		
 	}
 	

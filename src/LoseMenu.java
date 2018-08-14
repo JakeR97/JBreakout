@@ -1,8 +1,11 @@
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.InputStream;
@@ -29,20 +32,22 @@ public class LoseMenu extends JFrame implements ActionListener {
 	private int level;
 	private JLabel backgr;
 	
-	/** The constructor directly initializes all of the buttong
+	/** The constructor directly initializes all of the buttons
 	 * and background image
 	 * @param currentLevel is the level that was lost
 	 * @param backg is the image of the lost level
 	 */
-	public LoseMenu(int currentLevel, JLabel backg) {
+	public LoseMenu(int currentLevel, JLabel backg, int x, int y) {
 		backgr = backg;
 		level = currentLevel;
 		setTitle("Breakout");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setSize(Constants.WIDTH, Constants.HEIGHT);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();     
+        setSize((int)(screenSize.height * 0.66), screenSize.height);
 		setResizable(false);
 		setVisible(true);
 		setIconImage(Constants.ICON);
+		setLocation(x, y);
 		
 		retryLevel = new JButton("Retry Level");
 		retryLevel.setFont(Constants.MENU_FONT);
@@ -63,14 +68,18 @@ public class LoseMenu extends JFrame implements ActionListener {
 		loseMenu = new JPanel() {
 			@Override
 			public void paintComponent(Graphics g) {
+			    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+                double scale = screenSize.getHeight()/1080;
 				super.paintComponent(g);
+				Graphics2D g2d = (Graphics2D) g;
 				backgr.getIcon().paintIcon(this, g, 0, 0);
-				g.setColor(Color.BLACK);
-				g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 72));
-				g.drawString("Game Over", 145, 180);
-				g.setColor(Color.RED);
-				g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 72));
-				g.drawString("Game Over", 150, 175);
+				g2d.scale(scale, scale);
+				g2d.setColor(Color.BLACK);
+				g2d.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 72));
+				g2d.drawString("Game Over", 145, 180);
+				g2d.setColor(Color.RED);
+				g2d.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 72));
+				g2d.drawString("Game Over", 150, 175);
 			}
 		};
 		loseMenu.setLayout(new FlowLayout());
@@ -100,7 +109,7 @@ public class LoseMenu extends JFrame implements ActionListener {
 		} else if (e.getSource() == retryLevel) {
 			this.dispose();
 			music.stop();
-			new Breakout(level);
+			new Breakout(level, this.getX(), this.getY());
 		}
 	}
 

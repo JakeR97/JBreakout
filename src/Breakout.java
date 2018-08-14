@@ -1,3 +1,5 @@
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import javax.swing.JFrame;
 
 /** This is the JFram in which the Display JPanels live
@@ -12,14 +14,15 @@ public class Breakout extends JFrame {
 	/** The default constructor launches a new default 
 	 * display JPanel
 	 */
-	public Breakout() {
+	public Breakout(int x, int y) {
 		setTitle("Breakout");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setSize(Constants.WIDTH, Constants.HEIGHT);
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();		
+		setSize((int)(screenSize.height * 0.66), screenSize.height);
 		setResizable(false);
 		setVisible(true);
 		setIconImage(Constants.ICON);
-		
+		setLocation(x, y);
 		try {
 			add(new Display());
 		} catch (InterruptedException e) {
@@ -32,14 +35,15 @@ public class Breakout extends JFrame {
 	 * level specific Display JPanel
 	 * @param level
 	 */
-	public Breakout(int level) {
+	public Breakout(int level, int x, int y) {
 		setTitle("Breakout");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setSize(Constants.WIDTH, Constants.HEIGHT);
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();       
+        setSize((int)(screenSize.height * 0.66), screenSize.height);
 		setResizable(false);
 		setVisible(true);
 		setIconImage(Constants.ICON);
-		
+		setLocation(x, y);
 		try {
 			add(new Display(level));
 		} catch (InterruptedException e) {

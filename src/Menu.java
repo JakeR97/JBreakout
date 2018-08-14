@@ -1,7 +1,10 @@
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.InputStream;
@@ -37,7 +40,8 @@ public class Menu extends JFrame implements ActionListener {
 	public Menu() {
 		setTitle("Breakout");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setSize(Constants.WIDTH, Constants.HEIGHT);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();     
+        setSize((int)(screenSize.height * 0.66), screenSize.height);
 		setResizable(false);
 		setVisible(true);
 		InputStream musicStream = Menu.class.getResourceAsStream("/MainMenuMusic.wav");
@@ -58,13 +62,16 @@ public class Menu extends JFrame implements ActionListener {
 			@Override
 			public void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				g.drawImage(background, 0, 0, null);
+				Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+				double scale = screenSize.getHeight()/1080;
+				Graphics2D g2d = (Graphics2D) g;
+				g2d.scale(scale, scale);
+				g2d.drawImage(background, 0, 0, null);
 			}
 		};
 		menu.setLayout(new FlowLayout());
 		JPanel subPanel = new JPanel(new GridLayout(20, 2, 10, 10));
 		subPanel.setBackground(Constants.CLEAR);
-		menu.add(subPanel);
 		
 		start = new JButton("New Game");
 		start.setFont(Constants.MENU_FONT);
@@ -82,6 +89,7 @@ public class Menu extends JFrame implements ActionListener {
 		subPanel.add(start);
 		subPanel.add(levels);
 		subPanel.add(quit);
+		menu.add(subPanel);
 		
 		this.add(menu);
 		music.loop();
@@ -101,7 +109,11 @@ public class Menu extends JFrame implements ActionListener {
 			@Override
 			public void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				g.drawImage(background, 0, 0, null);
+				Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+                double scale = screenSize.getHeight()/1080;
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.scale(scale, scale);
+                g2d.drawImage(background, 0, 0, null);
 			}
 		};
 		levelMenu.setLayout(new FlowLayout());
@@ -170,11 +182,11 @@ public class Menu extends JFrame implements ActionListener {
 		} else if (e.getSource() == start) {
 			this.dispose();
 			music.stop();
-			new Breakout();
+			new Breakout(this.getX(), this.getY());
 		} else if (e.getSource().getClass() == JButton.class) {
 			this.dispose();
 			music.stop();
-			new Breakout(levelList.indexOf(e.getSource()) + 1);
+			new Breakout(levelList.indexOf(e.getSource()) + 1, this.getX(), this.getY());
 		}
 		revalidate();
 		repaint();

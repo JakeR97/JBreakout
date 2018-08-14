@@ -14,7 +14,7 @@ public class GameRunner {
         
         EventQueue.invokeLater(new Runnable() {
             @Override
-            public void run() {                
+            public void run() {      
                 Menu game = new Menu();
                 game.setVisible(true);                
             }

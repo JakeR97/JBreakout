@@ -16,7 +16,6 @@ public class Ball extends Sprite {
 	private int vertSpeed;
 	private int hoSpeed;
 	private String spec;
-
 	/** Creates a new ball at specified location
 	 * and sets its image to be a random image from
 	 * the group of ball images
@@ -100,14 +99,14 @@ public class Ball extends Sprite {
 	/** This method is responsible for the balls movement */
 	public void move() {
 		if (vertDir.equals("up")) {
-			this.setY(this.getY() - vertSpeed);
+			this.setY((int)(this.getY() - (vertSpeed)));
 		} else if (vertDir.equals("down")) {
-			this.setY(this.getY() + vertSpeed);
+			this.setY((int)(this.getY() + (vertSpeed)));
 		}	
 		if (hoDir.equals("left")) {
-			this.setX(this.getX() - hoSpeed);
+			this.setX((int)(this.getX() - (hoSpeed)));
 		} else if (hoDir.equals("right")) {
-			this.setX(this.getX() + hoSpeed);
+			this.setX((int)(this.getX() + (hoSpeed)));
 		}
 	}
 	
